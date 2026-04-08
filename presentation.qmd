@@ -37,29 +37,27 @@ execute:
 **A path through geostatistics, exposure science, and open-source tools**
 
 - 🎓 **PhD** — UNC Chapel Hill, Environmental Sciences & Engineering
-  - Geostatistics, BME, spatiotemporal exposure modeling
 - 🧪 **Postdoc** — Environmental Defense Fund
-  - Mobile monitoring, urban air quality mapping
 - 🏔️ **Research Faculty** — Oregon State University (K99/R00)
-  - Multi-pollutant spatiotemporal frameworks
-  - Scalable GP methods (Vecchia approximation)
 - 🏛️ **NIEHS** — Stadtman Tenure-Track Investigator
-  - Source-to-outcome risk assessment
-  - Open-source software for epi & tox community
+
 :::
 ::: {.column width="45%"}
 
 ::: {.r-stack}
 ::: {style="text-align:center;"}
-**UNC Chapel Hill**
+![](images/University_of_North_Carolina_at_Chapel_Hill_logo,_2025.svg){width=220}
+
 
 ↓
 
-**Environmental Defense Fund**
+![](images/EDF_crop.png){width=220}
+
 
 ↓
 
-**Oregon State University**
+![](images/osu-drupal_480.png){width=220}
+
 
 ↓
 
@@ -166,11 +164,8 @@ All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopi
 
 ## The Exposome Cascade: Source-to-Outcome Framework
 
-::: {.columns}
-::: {.column width="52%"}
-![](images/Exposome-Cascade.png){fig-align="center" width="100%"}
-:::
-::: {.column width="48%"}
+![](images/Exposome-Cascade.png){fig-align="center" height="320"}
+
 **Why a source-to-outcome approach?**
 
 - Environmental sources → ambient concentrations → internal exposures → biological responses → health outcomes
@@ -185,8 +180,6 @@ All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopi
 - 📊 **Exposure models** — spatiotemporal GP & ensemble ML (PrestoGP, beethoven)
 - 🧬 **Risk modeling** — mixture toxicology to population risk (GeoTox)
 - 🏥 **Health outcomes** — wildfire smoke × immune disease (hcup_ap)
-:::
-:::
 
 ::: {.notes}
 The Exposome Cascade is the conceptual framework unifying all the tools and methods we'll discuss. The key insight is that answering "how does pollution affect health?" requires being rigorous at every stage of this chain — data access, exposure estimation, and epidemiologic analysis.
