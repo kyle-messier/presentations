@@ -32,19 +32,53 @@ execute:
 
 ## Career Overview
 
-::: {.columns}
-::: {.column width="60%"}
 **A path through geostatistics, exposure science, and open-source tools**
 
-- 🎓 **PhD** — UNC Chapel Hill, Environmental Sciences & Engineering
-- 🧪 **Postdoc** — Environmental Defense Fund
-- 🏔️ **Research Faculty** — Oregon State University (K99/R00)
-- 🏛️ **NIEHS** — Stadtman Tenure-Track Investigator
-:::
-::: {.column width="40%"}
-*[Career timeline graphic — placeholder]*
-:::
-:::
+<div style="display:flex; align-items:flex-start; justify-content:center; gap:0; padding:30px 0 10px 0; font-family:sans-serif;">
+
+  <div style="text-align:center; width:220px;">
+    <div style="background:#4B9CD3; border-radius:12px; padding:15px 10px; color:white; font-weight:bold; font-size:0.95em; min-height:80px; display:flex; align-items:center; justify-content:center; line-height:1.3;">
+      UNC Chapel Hill<br>ESE
+    </div>
+    <div style="margin-top:10px; font-size:0.8em; color:#444;">
+      <strong>PhD</strong><br>Geostatistics &amp; BME<br>Spatial Exposure Modeling
+    </div>
+  </div>
+
+  <div style="font-size:2.2em; color:#999; align-self:flex-start; margin-top:22px; padding:0 8px;">&#8594;</div>
+
+  <div style="text-align:center; width:220px;">
+    <div style="background:#00873E; border-radius:12px; padding:15px 10px; color:white; font-weight:bold; font-size:0.95em; min-height:80px; display:flex; align-items:center; justify-content:center; line-height:1.3;">
+      Environmental<br>Defense Fund
+    </div>
+    <div style="margin-top:10px; font-size:0.8em; color:#444;">
+      <strong>Postdoc</strong><br>Mobile Monitoring<br>Urban Air Quality
+    </div>
+  </div>
+
+  <div style="font-size:2.2em; color:#999; align-self:flex-start; margin-top:22px; padding:0 8px;">&#8594;</div>
+
+  <div style="text-align:center; width:220px;">
+    <div style="background:#D73F09; border-radius:12px; padding:15px 10px; color:white; font-weight:bold; font-size:0.95em; min-height:80px; display:flex; align-items:center; justify-content:center; line-height:1.3;">
+      Oregon State<br>University
+    </div>
+    <div style="margin-top:10px; font-size:0.8em; color:#444;">
+      <strong>K99/R00</strong><br>Spatiotemporal Methods<br>Multi-pollutant Models
+    </div>
+  </div>
+
+  <div style="font-size:2.2em; color:#999; align-self:flex-start; margin-top:22px; padding:0 8px;">&#8594;</div>
+
+  <div style="text-align:center; width:220px;">
+    <div style="background:#f8f8f8; border:2px solid #00703C; border-radius:12px; padding:10px; min-height:80px; display:flex; align-items:center; justify-content:center;">
+      <img src="images/NIEHS-4color-logo.png" style="max-height:58px; max-width:180px; object-fit:contain;">
+    </div>
+    <div style="margin-top:10px; font-size:0.8em; color:#444;">
+      <strong>Stadtman Investigator</strong><br>Source-to-Outcome<br>Risk Assessment
+    </div>
+  </div>
+
+</div>
 
 ::: {.notes}
 Introduce the narrative arc: each career stage added a new tool or method that feeds into the current research program — ultimately a source-to-outcome story.
@@ -138,6 +172,34 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 ::: {.notes}
 All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
+:::
+
+## The Exposome Cascade: Source-to-Outcome Framework
+
+::: {.columns}
+::: {.column width="52%"}
+![](images/Exposome-Cascade.png){fig-align="center" width="100%"}
+:::
+::: {.column width="48%"}
+**Why a source-to-outcome approach?**
+
+- Environmental sources → ambient concentrations → internal exposures → biological responses → health outcomes
+- Traditional paradigm: **one pollutant, one outcome**, cross-sectional
+- Modern challenge: **multi-source, multi-pathway, multi-scale** complexity
+- Requires harmonized data pipelines, scalable computation, and validated statistical models
+
+**Our research spans the full cascade:**
+
+- 📥 **Data** — standardized, harmonized geospatial inputs (amadeus)
+- ⚙️ **Computation** — parallel processing at national scale (chopin)
+- 📊 **Exposure models** — spatiotemporal GP & ensemble ML (PrestoGP, beethoven)
+- 🧬 **Risk modeling** — mixture toxicology to population risk (GeoTox)
+- 🏥 **Health outcomes** — wildfire smoke × immune disease (hcup_ap)
+:::
+:::
+
+::: {.notes}
+The Exposome Cascade is the conceptual framework unifying all the tools and methods we'll discuss. The key insight is that answering "how does pollution affect health?" requires being rigorous at every stage of this chain — data access, exposure estimation, and epidemiologic analysis.
 :::
 
 ## Research Vision: Source-to-Outcome Continuum
