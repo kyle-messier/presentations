@@ -21,6 +21,7 @@ format:
     height: 720
     scrollable: true
     smaller: true
+    embed-resources: true
 execute:
   echo: false
   warning: false
