@@ -37,8 +37,8 @@ execute:
 **A path through geostatistics, exposure science, and open-source tools**
 
 - 🎓 **PhD** — UNC Chapel Hill, Environmental Sciences & Engineering
-- �� **Postdoc** — Environmental Defense Fund & UT Austin
-- 🏔️ **Faculty** — Oregon State University (K99/R00)
+- 🧪 **Postdoc** — Environmental Defense Fund
+- 🏔️ **Research Faculty** — Oregon State University (K99/R00)
 - 🏛️ **NIEHS** — Stadtman Tenure-Track Investigator
 :::
 ::: {.column width="40%"}
@@ -56,25 +56,24 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 ::: {.column width="65%"}
 **Department of Environmental Sciences & Engineering**
 
-- Focus: **geostatistics** and spatiotemporal exposure modeling
+- Focus: **geostatistics** and spatiotemporal exposure modeling via Bayesian Maximum Entropy (BME)
+- Advisor: Dr. Marc Serre
 - Developed scalable methods for large geospatial datasets
-- Key insight: land-use regression (LUR) models need to account for spatially correlated residuals
-- Collaboration with **Matthias Katzfuss** → Vecchia approximation for GP scalability
+- Key insight: land-use regression (LUR) plus Kriging/BME improves space/time prediction over LUR or Kriging alone in most environmental exposure settings
 
-> *Messier & Katzfuss (2020). Scalable penalized spatiotemporal land-use regression for ground-level nitrogen dioxide. JRSS-A*
 :::
 ::: {.column width="35%"}
 *[NO₂ concentration map — placeholder]*
 :::
 :::
 
-## Postdoc — EDF & UT Austin
+## Postdoc — Environmental Defense Fund
 
 ::: {.columns}
 ::: {.column width="60%"}
 **Mobile Monitoring & Urban Air Quality Mapping**
 
-- **Environmental Defense Fund** + **UT Austin** collaboration
+- **Environmental Defense Fund** 
 - Deployed mobile monitoring platforms to measure near-road air quality at high spatial resolution
 - Mapped intra-urban variability in NO₂, PM₂.₅, black carbon
 - Demonstrated that fixed-site monitors miss substantial intra-urban gradients
@@ -95,6 +94,10 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 - Developed multi-pollutant spatiotemporal frameworks
 - Began building open-source R tools for the exposure modeling community
 - Focus: scalable methods applicable to national-scale, multi-year exposure assessment
+
+- Collaboration with spatial statistician **Matthias Katzfuss** → General Vecchia approximation for GP scalability
+
+> *Messier & Katzfuss (2021). Scalable penalized spatiotemporal land-use regression for ground-level nitrogen dioxide. Annals of Applied Statistics*
 :::
 ::: {.column width="35%"}
 *[K99 project schematic — placeholder]*
@@ -128,13 +131,13 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 |---|---------|-------------|--------|
 | 1 | [**amadeus**](https://niehs.github.io/amadeus/) | Data access & processing for 17+ env. datasets | Active, CRAN |
 | 2 | [**beethoven**](https://niehs.github.io/beethoven/) | Ensemble air quality model pipeline | WIP |
-| 3 | [**chopin**](https://docs.ropensci.org/chopin/) | Parallel spatial computation (rOpenSci) | Active |
+| 3 | [**chopin**](https://docs.ropensci.org/chopin/) | Parallel spatial computation | Active, CRAN, rOpenSci |
 | 4 | [**GeoTox**](https://niehs.github.io/GeoTox) | Source-to-outcome risk modeling framework | Active, CRAN |
-| 5 | [**RGCA**](https://niehs.github.io/RGCA) | Reflected GCA for chemical mixture dose-response | WIP |
+| 5 | [**RGCA**](https://niehs.github.io/RGCA) | Reflected GCA for chemical mixture dose-response | Active, GitHub |
 | 6 | [**PrestoGP**](https://niehs.github.io/PrestoGP/) | Scalable penalized spatiotemporal GP regression | WIP |
 
 ::: {.notes}
-All packages on github.com/NIEHS. amadeus and GeoTox are on CRAN. chopin is rOpenSci certified.
+All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
 :::
 
 ## Research Vision: Source-to-Outcome Continuum
@@ -195,7 +198,7 @@ All packages on github.com/NIEHS. amadeus and GeoTox are on CRAN. chopin is rOpe
 - Returns `data.frame`, `sf`, or `SpatVector` ready for modeling
 :::
 ::: {.column width="40%"}
-*[amadeus hex logo — placeholder]*
+![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.svg){width=220 fig-alt="amadeus hex logo"}
 :::
 :::
 
@@ -387,7 +390,7 @@ result <- par_make_gridset(
 ```
 :::
 ::: {.column width="40%"}
-*[Spatial partitioning diagram — placeholder]*
+![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.svg){width=220 fig-alt="chopin hex logo"}
 
 `docs.ropensci.org/chopin`
 
@@ -409,7 +412,7 @@ result <- par_make_gridset(
 - Built on **amadeus** (data) + **chopin** (parallel extraction)
 :::
 ::: {.column width="40%"}
-*[beethoven hex logo — placeholder]*
+![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.svg){width=220 fig-alt="beethoven hex logo"}
 
 `github.com/NIEHS/beethoven`
 :::
@@ -640,7 +643,7 @@ Chemical mixture → molecular target → population risk
 ::: {.column width="55%"}
 **SET Group Software Principles:**
 
-- **Test-driven development (TDD)** — tests before code
+- **Test-driven development (TDD)** — explicit tests before/during code
 - **CI/CD** — R-CMD-check, lint, coverage on every push
 - **Branch protection** — PR + review required to merge
 - **Containerization** — Apptainer images for HPC reproducibility
@@ -651,15 +654,13 @@ Chemical mixture → molecular target → population risk
 :::
 ::: {.column width="45%"}
 
-| Package | CRAN | Repo |
-|---------|------|------|
-| amadeus | ✅ | NIEHS/amadeus |
-| GeoTox | ✅ | NIEHS/GeoTox |
-| chopin | ✅ | ropensci/chopin |
-| beethoven | 🔄 WIP | NIEHS/beethoven |
-| PrestoGP | 🔄 WIP | NIEHS/PrestoGP |
-| RGCA | 🔄 WIP | NIEHS/RGCA |
-| hcup_ap | — | NIEHS/hcup_ap |
+::: {layout="[[1,1,1],[1,1,1]]"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.svg){width=110 fig-alt="amadeus"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.svg){width=110 fig-alt="beethoven"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.svg){width=110 fig-alt="chopin"}
+![](images/GeoToxHex.svg){width=110 fig-alt="GeoTox"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_RGCA.svg){width=110 fig-alt="RGCA"}
+:::
 
 `github.com/NIEHS` · `niehs.github.io/SET`
 :::
@@ -689,7 +690,7 @@ install.packages("GeoTox")
 > Eccles et al. (2023). *Science of the Total Environment*.
 :::
 ::: {.column width="40%"}
-*[GeoTox framework diagram — placeholder]*
+![GeoTox](images/GeoToxHex.svg){width=220 fig-alt="GeoTox hex logo"}
 
 `github.com/NIEHS/GeoTox`
 
@@ -785,7 +786,6 @@ NIEHS · kyle.messier@nih.gov
 | `NIEHS/beethoven` | Air quality ensemble pipeline |
 | `NIEHS/PrestoGP` | Spatiotemporal GP models |
 | `NIEHS/GeoTox` | Source-to-outcome risk |
-| `NIEHS/hcup_ap` | Wildfire × health outcomes |
 | `NIEHS/RGCA` | Chemical mixture dose-response |
 | `ropensci/chopin` | Parallel spatial computation |
 
