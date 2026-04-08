@@ -149,6 +149,8 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 ## SET Group: Software in Development
 
+::: {.columns}
+::: {.column width="52%"}
 | # | Package | Description | Status |
 |---|---------|-------------|--------|
 | 1 | [**amadeus**](https://niehs.github.io/amadeus/) | Data access & processing for 17+ env. datasets | Active, CRAN |
@@ -157,6 +159,11 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 | 4 | [**GeoTox**](https://niehs.github.io/GeoTox) | Source-to-outcome risk modeling framework | Active, CRAN |
 | 5 | [**RGCA**](https://niehs.github.io/RGCA) | Reflected GCA for chemical mixture dose-response | Active, GitHub |
 | 6 | [**PrestoGP**](https://niehs.github.io/PrestoGP/) | Scalable penalized spatiotemporal GP regression | WIP |
+:::
+::: {.column width="48%"}
+![](images/SET-software-chorus.png){fig-align="center" width="100%"}
+:::
+:::
 
 ::: {.notes}
 All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
