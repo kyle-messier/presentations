@@ -198,7 +198,7 @@ All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopi
 - Returns `data.frame`, `sf`, or `SpatVector` ready for modeling
 :::
 ::: {.column width="40%"}
-![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.svg){width=220 fig-alt="amadeus hex logo"}
+![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=220 fig-alt="amadeus hex logo"}
 :::
 :::
 
@@ -390,7 +390,7 @@ result <- par_make_gridset(
 ```
 :::
 ::: {.column width="40%"}
-![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.svg){width=220 fig-alt="chopin hex logo"}
+![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=220 fig-alt="chopin hex logo"}
 
 `docs.ropensci.org/chopin`
 
@@ -412,7 +412,7 @@ result <- par_make_gridset(
 - Built on **amadeus** (data) + **chopin** (parallel extraction)
 :::
 ::: {.column width="40%"}
-![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.svg){width=220 fig-alt="beethoven hex logo"}
+![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=220 fig-alt="beethoven hex logo"}
 
 `github.com/NIEHS/beethoven`
 :::
@@ -655,11 +655,11 @@ Chemical mixture → molecular target → population risk
 ::: {.column width="45%"}
 
 ::: {layout="[[1,1,1],[1,1,1]]"}
-![](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.svg){width=110 fig-alt="amadeus"}
-![](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.svg){width=110 fig-alt="beethoven"}
-![](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.svg){width=110 fig-alt="chopin"}
-![](images/GeoToxHex.svg){width=110 fig-alt="GeoTox"}
-![](images/MessierK_24-2843_R-Package_Hex_Sticker_RGCA.svg){width=110 fig-alt="RGCA"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=110 fig-alt="amadeus"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=110 fig-alt="beethoven"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=110 fig-alt="chopin"}
+![](images/GeoToxHex.png){width=110 fig-alt="GeoTox"}
+![](images/MessierK_24-2843_R-Package_Hex_Sticker_RGCA.png){width=110 fig-alt="RGCA"}
 :::
 
 `github.com/NIEHS` · `niehs.github.io/SET`
@@ -690,7 +690,7 @@ install.packages("GeoTox")
 > Eccles et al. (2023). *Science of the Total Environment*.
 :::
 ::: {.column width="40%"}
-![GeoTox](images/GeoToxHex.svg){width=220 fig-alt="GeoTox hex logo"}
+![GeoTox](images/GeoToxHex.png){width=220 fig-alt="GeoTox hex logo"}
 
 `github.com/NIEHS/GeoTox`
 
