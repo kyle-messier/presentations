@@ -3,7 +3,7 @@ title: "Data, Methods, and Pipelines in Geospatial Source-to-Outcome Risk Assess
 subtitle: "Environmental and Occupational Epidemiology Seminar"
 author: "Kyle P. Messier, PhD"
 institute: "Stadtman Tenure-Track Investigator<br>Division of Translational Toxicology & Biostatistics and Computational Biology Branch<br>National Institute of Environmental Health Sciences"
-date: today
+date: 2026-04-17
 format:
   revealjs:
     theme: default
@@ -85,7 +85,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 :::
 ::: {.column width="35%"}
-*[NO₂ concentration map — placeholder]*
+![](images/UNC_Radon.png){width=420}
 :::
 :::
 
@@ -97,34 +97,29 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 - **Environmental Defense Fund** 
 - Deployed mobile monitoring platforms to measure near-road air quality at high spatial resolution
-- Mapped intra-urban variability in NO₂, PM₂.₅, black carbon
+- Mapped intra-urban variability in NO, NO₂, black carbon
 - Demonstrated that fixed-site monitors miss substantial intra-urban gradients
 - Contributed to Google Street View–EDF collaborative campaigns
 :::
 ::: {.column width="40%"}
-*[Mobile monitoring map / campaign image — placeholder]*
+![](images/EDF_mobile_monitoring.png){width=420}
 :::
 :::
 
 ## Oregon State University — K99/R00
 
-::: {.columns}
-::: {.column width="65%"}
+
 **NIH K99/R00 Pathway to Independence Award**
 
-- Built independent research program bridging **geostatistics** and **environmental epidemiology**
-- Developed multi-pollutant spatiotemporal frameworks
-- Began building open-source R tools for the exposure modeling community
+- Built independent research program bridging **geostatistics** and **multivariate exposomic data**
+- Developed appreciation for primary data collection(e.g. analytical chemistry)
+- Focus on indoor and outdoor exposures from air pollution
 - Focus: scalable methods applicable to national-scale, multi-year exposure assessment
 
 - Collaboration with spatial statistician **Matthias Katzfuss** → General Vecchia approximation for GP scalability
-
+> *Messier ... K.A. Anderson (2019). Indoor versus Outdoor Air Quality during Wildfires. ES&T Letters*
 > *Messier & Katzfuss (2021). Scalable penalized spatiotemporal land-use regression for ground-level nitrogen dioxide. Annals of Applied Statistics*
-:::
-::: {.column width="35%"}
-*[K99 project schematic — placeholder]*
-:::
-:::
+
 
 ## NIEHS — Stadtman Tenure-Track Investigator
 
@@ -137,13 +132,13 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 - Part of the NIH **Stadtman Investigator** program
 - Research focus:
   - Scalable spatiotemporal exposure models
-  - Open-source software for the epi/tox community
-  - Linking exposures to health outcomes at scale
-  - Source-to-outcome risk modeling (GeoTox)
+  - Open-source software for environmental health community (exposure, modeling, toxicology, and epidemiology)
+   - Open-source software for spatial analysis 
+  - Source-to-outcome risk modeling (
   - CHORDS: Connecting Health Outcomes Research Data Systems
 :::
 ::: {.column width="40%"}
-*[SET group / NIEHS logo — placeholder]*
+![](images/MessierK24_1233%20SET%20group%20graphic%20concepts%20v07%20shadow.jpg){width=420}
 :::
 :::
 
@@ -210,118 +205,9 @@ The Exposome Cascade is the conceptual framework unifying all the tools and meth
 
 ---
 
-# Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#6b3fa0"}
+# Developing Accessible Geospatial Methods and Data {.section-title background-color="#2d6a4f"}
 
-## Motivation: Barriers to Geospatial Data
-
-::: {.columns}
-::: {.column width="55%"}
-**The problem:**
-
-- Environmental health research requires dozens of heterogeneous data sources
-- Each source: unique file formats, APIs, naming conventions, coordinate systems
-- Researchers spend enormous time on data wrangling before any analysis
-- Results are often not reproducible across teams or HPC systems
-- Smaller research groups lack resources to build custom pipelines
-:::
-::: {.column width="45%"}
-**The goal:**
-
-> Lower the barrier so that *any* researcher can access and process large-scale environmental data in R with a consistent API.
-
-**CHORDS Program (NIEHS)**
-
-> *Connecting Health Outcomes Research Data Systems* — building data infrastructure for patient-centered outcomes research on environment and health.
-:::
-:::
-
-## amadeus: Overview
-
-::: {.columns}
-::: {.column width="60%"}
-**A** **Ma**chine for **D**ata, **E**nvironments, and **U**ser **S**etup
-
-- R package on **CRAN**: `install.packages("amadeus")`
-- **17+ environmental data sources** under one consistent API
-- Three-function workflow:
-  1. `download_data()` — fetch raw data from source repositories
-  2. `process_covariates()` — import, clean, standardize CRS + layer names
-  3. `calculate_covariates()` — extract values at point locations (with optional buffer)
-- Returns `data.frame`, `sf`, or `SpatVector` ready for modeling
-:::
-::: {.column width="40%"}
-![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=220 fig-alt="amadeus hex logo"}
-:::
-:::
-
-## amadeus: Data Sources
-
-| Source | File Type | Genre | Extent |
-|--------|-----------|-------|--------|
-| EPA AQS | CSV | Air Pollution | US |
-| MODIS (NASA) | HDF | Atmosphere / Land Use | Global |
-| MERRA-2 (NASA) | netCDF | Meteorology | Global |
-| NARR (NOAA) | netCDF | Meteorology | N. America |
-| GridMet / TerraClimate | netCDF | Climate | US / Global |
-| NLCD (MRLC) | GeoTIFF | Land Use | US |
-| NOAA HMS Fire & Smoke | Shapefile | Wildfire Smoke | N. America |
-| GMTED2010 (USGS) | Grid | Elevation | Global |
-| Population Density (NASA SEDAC) | GeoTIFF | Demography | Global |
-| EPA NEI / TRI | CSV | Emissions | US |
-| EPA Ecoregions | Shapefile | Climate Regions | N. America |
-| Köppen-Geiger Classification | GeoTIFF | Climate Classification | Global |
-| NASA GEOS-CF | netCDF | Atmosphere | Global |
-
-## amadeus: Workflow in Practice
-
-```r
-# 1. Download NARR snow water equivalent data
-download_data(
-  dataset_name = "narr", year = 2022,
-  variable = "weasd", directory_to_save = "/data/narr/",
-  acknowledgement = TRUE, download = TRUE
-)
-
-# 2. Process to standardized SpatRaster
-weasd <- process_covariates(
-  covariate = "narr", date = c("2022-01-01", "2022-01-05"),
-  variable = "weasd", path = "/data/narr/weasd/"
-)
-
-# 3. Extract values at monitoring site locations
-covars <- calculate_covariates(
-  covariate = "narr", from = weasd,
-  locs = aqs_sites, locs_id = "site_id", radius = 0
-)
-```
-
-Same `dataset_name` ties all three functions together across all 17+ sources.
-
-## amadeus: Publication & Impact
-
-::: {.columns}
-::: {.column width="60%"}
-**Peer-reviewed publication:**
-
-> Manware, M., Song, I., Marques, E. S., Kassien, M. A., Clark, L. P., & Messier, K. P. (2025). Amadeus: Accessing and analyzing large scale environmental data in R. *Environmental Modelling & Software*, 186, 106352.
-
-- On CRAN — installable by any R user worldwide
-- Data backbone for **beethoven** air quality pipeline
-- Vignette for every data source
-- Active development — new sources added regularly
-:::
-::: {.column width="40%"}
-*[CRAN download stats — placeholder]*
-
-`github.com/NIEHS/amadeus`
-:::
-:::
-
----
-
-# Developing Accessible Geospatial Methods {.section-title background-color="#2d6a4f"}
-
-## Why Accessible Methods?
+## Why Accessible Methods and Data?
 
 ::: {.columns}
 ::: {.column width="55%"}
@@ -331,21 +217,94 @@ Same `dataset_name` ties all three functions together across all 17+ sources.
 - State-of-the-art methods locked in papers — not usable software
 - Exposure scientists, epidemiologists, and toxicologists need tools they can *actually run*
 
-**Our approach:**
+**FAIR+ Principles:**
 
-- Wrap cutting-edge methods in well-documented R packages
-- Automated CI/CD testing ensures reliability
-- Consistent APIs reduce learning curve
-- HPC-ready (SLURM, parallel computation)
+- **F**indable — published on CRAN, rOpenSci, and GitHub
+- **A**ccessible — open-source, free, installable in one line
+- **I**nteroperable — consistent APIs across packages; works with `{sf}`, `{terra}`, `{tidymodels}`
+- **R**eusable — documented, versioned, tested, containerized
+- **+Reproducible** — `{targets}` pipelines, Apptainer containers, HPC-ready
+
 :::
 ::: {.column width="45%"}
 
 | Package | Method domain |
 |---------|--------------|
-| **PrestoGP** | Scalable spatiotemporal GP |
+| **amadeus** | Geospatial data access |
 | **chopin** | Parallel spatial computation |
 | **beethoven** | Ensemble air quality modeling |
+| **PrestoGP** | Scalable spatiotemporal GP |
+| **GeoTox** | Source-to-outcome risk |
 
+:::
+:::
+
+## CHORDS: Connecting Health Outcomes Research Data Systems
+
+::: {.columns}
+::: {.column width="60%"}
+**Program Overview**
+
+- NIEHS initiative to build scalable data infrastructure linking environmental exposures to health outcomes
+- Focus: patient-centered outcomes research at the intersection of environment and health
+- Harmonizes exposure data with clinical and claims-based health records
+
+**Key Aims:**
+
+- Standardize data access across environmental and health databases
+- Enable reproducible linkage of exposures to health records (e.g., HCUP, Medicare, Medicaid)
+- Support open-science workflows at national scale
+
+*[CHORDS overview figure — placeholder]*
+:::
+::: {.column width="40%"}
+*[CHORDS program diagram — placeholder]*
+:::
+:::
+
+## NIH HEW Data Accelerator
+
+::: {.columns}
+::: {.column width="60%"}
+**Health, Exposure, and Well-being (HEW) Data Accelerator**
+
+- NIH-wide initiative accelerating linkage of environmental exposure data with health outcomes
+- Brings together data systems, methods, and infrastructure across NIH institutes
+- Enables large-scale analyses connecting EPA, NOAA, and NASA data to biomedical records
+
+**Role of SET Group:**
+
+- Contributing exposure modeling pipelines (amadeus, beethoven)
+- Providing spatiotemporal methods infrastructure
+- Supporting open-source data access tools for consortium use
+
+*[HEW Data Accelerator overview — placeholder]*
+:::
+::: {.column width="40%"}
+*[HEW program schematic — placeholder]*
+:::
+:::
+
+## Our Packages: Accessible Tools Across the Exposure Pipeline
+
+::: {.columns}
+::: {.column width="50%"}
+![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=160 fig-alt="amadeus hex logo"}
+**amadeus** — Geospatial data access & processing for 17+ environmental datasets
+`CRAN · github.com/NIEHS/amadeus`
+
+![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=160 fig-alt="chopin hex logo"}
+**chopin** — Parallel spatial computation via hierarchical partitioning
+`CRAN · rOpenSci · github.com/ropensci/chopin`
+:::
+::: {.column width="50%"}
+![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=160 fig-alt="beethoven hex logo"}
+**beethoven** — Reproducible ensemble air quality modeling pipeline
+`github.com/NIEHS/beethoven`
+
+![GeoTox](images/GeoToxHex.png){width=160 fig-alt="GeoTox hex logo"}
+**GeoTox** — Source-to-outcome chemical mixture risk modeling
+`CRAN · github.com/NIEHS/GeoTox`
 :::
 :::
 
@@ -517,6 +476,118 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 :::
 
 ---
+
+---
+
+# Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#6b3fa0"}
+
+## Motivation: Barriers to Geospatial Data
+
+::: {.columns}
+::: {.column width="55%"}
+**The problem:**
+
+- Environmental health research requires dozens of heterogeneous data sources
+- Each source: unique file formats, APIs, naming conventions, coordinate systems
+- Researchers spend enormous time on data wrangling before any analysis
+- Results are often not reproducible across teams or HPC systems
+- Smaller research groups lack resources to build custom pipelines
+:::
+::: {.column width="45%"}
+**The goal:**
+
+> Lower the barrier so that *any* researcher can access and process large-scale environmental data in R with a consistent API.
+
+**CHORDS Program (NIEHS)**
+
+> *Connecting Health Outcomes Research Data Systems* — building data infrastructure for patient-centered outcomes research on environment and health.
+:::
+:::
+
+## amadeus: Overview
+
+::: {.columns}
+::: {.column width="60%"}
+**A** **Ma**chine for **D**ata, **E**nvironments, and **U**ser **S**etup
+
+- R package on **CRAN**: `install.packages("amadeus")`
+- **17+ environmental data sources** under one consistent API
+- Three-function workflow:
+  1. `download_data()` — fetch raw data from source repositories
+  2. `process_covariates()` — import, clean, standardize CRS + layer names
+  3. `calculate_covariates()` — extract values at point locations (with optional buffer)
+- Returns `data.frame`, `sf`, or `SpatVector` ready for modeling
+:::
+::: {.column width="40%"}
+![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=220 fig-alt="amadeus hex logo"}
+:::
+:::
+
+## amadeus: Data Sources
+
+| Source | File Type | Genre | Extent |
+|--------|-----------|-------|--------|
+| EPA AQS | CSV | Air Pollution | US |
+| MODIS (NASA) | HDF | Atmosphere / Land Use | Global |
+| MERRA-2 (NASA) | netCDF | Meteorology | Global |
+| NARR (NOAA) | netCDF | Meteorology | N. America |
+| GridMet / TerraClimate | netCDF | Climate | US / Global |
+| NLCD (MRLC) | GeoTIFF | Land Use | US |
+| NOAA HMS Fire & Smoke | Shapefile | Wildfire Smoke | N. America |
+| GMTED2010 (USGS) | Grid | Elevation | Global |
+| Population Density (NASA SEDAC) | GeoTIFF | Demography | Global |
+| EPA NEI / TRI | CSV | Emissions | US |
+| EPA Ecoregions | Shapefile | Climate Regions | N. America |
+| Köppen-Geiger Classification | GeoTIFF | Climate Classification | Global |
+| NASA GEOS-CF | netCDF | Atmosphere | Global |
+
+## amadeus: Workflow in Practice
+
+```r
+# 1. Download NARR snow water equivalent data
+download_data(
+  dataset_name = "narr", year = 2022,
+  variable = "weasd", directory_to_save = "/data/narr/",
+  acknowledgement = TRUE, download = TRUE
+)
+
+# 2. Process to standardized SpatRaster
+weasd <- process_covariates(
+  covariate = "narr", date = c("2022-01-01", "2022-01-05"),
+  variable = "weasd", path = "/data/narr/weasd/"
+)
+
+# 3. Extract values at monitoring site locations
+covars <- calculate_covariates(
+  covariate = "narr", from = weasd,
+  locs = aqs_sites, locs_id = "site_id", radius = 0
+)
+```
+
+Same `dataset_name` ties all three functions together across all 17+ sources.
+
+## amadeus: Publication & Impact
+
+::: {.columns}
+::: {.column width="60%"}
+**Peer-reviewed publication:**
+
+> Manware, M., Song, I., Marques, E. S., Kassien, M. A., Clark, L. P., & Messier, K. P. (2025). Amadeus: Accessing and analyzing large scale environmental data in R. *Environmental Modelling & Software*, 186, 106352.
+
+- On CRAN — installable by any R user worldwide
+- Data backbone for **beethoven** air quality pipeline
+- Vignette for every data source
+- Active development — new sources added regularly
+:::
+::: {.column width="40%"}
+*[CRAN download stats — placeholder]*
+
+`github.com/NIEHS/amadeus`
+:::
+:::
+
+---
+
 
 # Risk Assessment of Wildfires and Autoimmune Disorders {.section-title background-color="#c1440e"}
 
