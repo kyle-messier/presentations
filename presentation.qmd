@@ -288,194 +288,42 @@ The Exposome Cascade is the conceptual framework unifying all the tools and meth
 ## Our Packages: Accessible Tools Across the Exposure Pipeline
 
 ::: {.columns}
-::: {.column width="50%"}
-![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=160 fig-alt="amadeus hex logo"}
-**amadeus** — Geospatial data access & processing for 17+ environmental datasets
+::: {.column width="33%"}
+![amadeus](images/MessierK_24-2843_R-Package_Hex_Sticker_amadeus.png){width=130 fig-alt="amadeus hex logo"}
+**amadeus**  
+Geospatial data access  
 `CRAN · github.com/NIEHS/amadeus`
 
-![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=160 fig-alt="chopin hex logo"}
-**chopin** — Parallel spatial computation via hierarchical partitioning
-`CRAN · rOpenSci · github.com/ropensci/chopin`
+![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=130 fig-alt="chopin hex logo"}
+**chopin**  
+Parallel spatial computation  
+`CRAN · rOpenSci`
 :::
-::: {.column width="50%"}
-![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=160 fig-alt="beethoven hex logo"}
-**beethoven** — Reproducible ensemble air quality modeling pipeline
+::: {.column width="33%"}
+![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=130 fig-alt="beethoven hex logo"}
+**beethoven**  
+Ensemble air quality pipeline  
 `github.com/NIEHS/beethoven`
 
-![GeoTox](images/GeoToxHex.png){width=160 fig-alt="GeoTox hex logo"}
-**GeoTox** — Source-to-outcome chemical mixture risk modeling
+![GeoTox](images/GeoToxHex.png){width=130 fig-alt="GeoTox hex logo"}
+**GeoTox**  
+Source-to-outcome risk modeling  
 `CRAN · github.com/NIEHS/GeoTox`
 :::
-:::
-
-## PrestoGP: Scalable Spatiotemporal GP
-
-::: {.columns}
-::: {.column width="60%"}
-**General Vecchia approximation** *(Katzfuss & Guinness 2021)*
-
-$$p(\mathbf{y}) \approx \prod_{i=1}^n p(y_i \mid y_{c(i)})$$
-
-Reduces computation: $\mathcal{O}(n^3)$ → $\mathcal{O}(nm^3)$, $m \ll n$
-
-**PrestoGP model** *(Messier & Katzfuss 2020, JRSS-A)*
-
-$$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{w} + \boldsymbol{\epsilon}$$
-
-- $\mathbf{w}$: spatiotemporal GP with Matérn covariance
-- $\boldsymbol{\beta}$: estimated via penalized likelihood (LASSO/SCAD/MCP)
-- Variable selection + GP estimation *simultaneously*
-:::
-::: {.column width="40%"}
-*[Vecchia neighbor diagram — placeholder]*
-:::
-:::
-
-## PrestoGP: R Package API
-
-```r
-# Univariate spatiotemporal model
-model <- new("VecchiaModel", n_neighbors = 10)
-model <- prestogp_fit(model, y, X, locs)
-yhat  <- prestogp_predict(model, X_new, locs_new)
-
-# Multivariate (multiple pollutants simultaneously)
-model_mv <- new("MultivariateVecchiaModel", n_neighbors = 10)
-model_mv <- prestogp_fit(model_mv,
-                         y    = list(y_no2, y_pm25),
-                         X    = list(X_no2, X_pm25),
-                         locs = list(locs, locs))
-
-# LOD-censored imputation
-model <- prestogp_fit(model, y_censored, X, locs,
-                      impute.y = TRUE, lod = lod_value)
-```
-
+::: {.column width="33%"}
+![PrestoGP](images/prestoGP-logo.png){width=130 fig-alt="PrestoGP logo"}
+**PrestoGP**  
+Scalable spatiotemporal GP regression  
 `github.com/NIEHS/PrestoGP`
 
-## PrestoGP: Applications
-
-::: {.columns}
-::: {.column width="50%"}
-**NO₂ Mapping** *(Messier & Katzfuss 2020)*
-
-- Continental US ground-level NO₂
-- Penalized LUR + spatiotemporal GP
-- Better CV performance vs. standard LUR
-
-*[Predicted NO₂ surface — placeholder]*
-:::
-::: {.column width="50%"}
-**Chlorotriazine Groundwater** *(In Progress)*
-
-> Multivariate & censored geospatial models for data-sparse chemicals: US chlorotriazine groundwater 1990–2022
-
-- Herbicide mixture modeling (atrazine, simazine, …)
-- Sparse + heavily LOD-censored monitoring data
-- Multivariate Matérn cross-covariance
-
-*[Chlorotriazine prediction map — placeholder]*
+![RGCA](images/MessierK_24-2843_R-Package_Hex_Sticker_RGCA.png){width=130 fig-alt="RGCA hex logo"}
+**RGCA**  
+Chemical mixture dose-response  
+`github.com/NIEHS/RGCA`
 :::
 :::
 
-## chopin: Parallel Spatial Computation
 
-::: {.columns}
-::: {.column width="60%"}
-**C**omputation of spatial data by **H**ierarchical and **O**bjective **P**artitioning of **In**puts for parallel processing
-
-- **rOpenSci** peer-reviewed R package
-- Splits large spatial datasets into tiles or hierarchical regions
-- Dispatches parallel workers (local or HPC cluster) over partitions
-- Recombines results transparently
-- Integrates with `{targets}` pipelines
-- Powers covariate extraction in **beethoven**
-
-```r
-result <- par_make_gridset(
-  x = aqs_sites,
-  mode = "grid",
-  nx = 10L, ny = 8L,
-  padding = 3000
-)
-```
-:::
-::: {.column width="40%"}
-![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=220 fig-alt="chopin hex logo"}
-
-`docs.ropensci.org/chopin`
-
-`github.com/ropensci/chopin`
-:::
-:::
-
-## beethoven: Ensemble Air Quality Pipeline
-
-::: {.columns}
-::: {.column width="60%"}
-**B**uilding an **E**xtensible, r**E**producible, **T**est-driven,
-**H**armonized, **O**pen-source, **V**ersioned, **EN**semble model for air quality
-
-- R package + **`{targets}`** reproducible pipeline
-- National-scale daily **PM₂.₅** predictions
-- Stacked ensemble: base learners + meta learner
-- NIEHS HPC (SLURM + Apptainer containers)
-- Built on **amadeus** (data) + **chopin** (parallel extraction)
-:::
-::: {.column width="40%"}
-![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=220 fig-alt="beethoven hex logo"}
-
-`github.com/NIEHS/beethoven`
-:::
-:::
-
-## beethoven: Architecture
-
-```
-amadeus ──► [Download: EPA AQS, MODIS, MERRA-2, NARR, NLCD, HMS ...]
-                  │
-chopin  ──► [Covariate calculation at AQS sites & prediction grid]
-                  │
-            [Base Learners: LightGBM | Neural Net | glmnet | SVM]
-                  │
-            [Meta Learner — stacked ensemble]
-                  │
-            National daily PM2.5 predictions + uncertainty
-```
-
-*`{targets}` manages the full dependency graph — every step cached*
-
-## beethoven: Ensemble Model
-
-::: {.columns}
-::: {.column width="55%"}
-**Stacked ensemble via `{tidymodels}`**
-
-**Base learners:**
-
-- LightGBM (gradient boosting)
-- Neural networks (`{brulee}` / `{torch}`)
-- Regularized regression (glmnet)
-- Support vector machines
-
-**Validation:**
-
-- Spatial cross-validation (`{spatialsample}`)
-- Hyperparameter tuning (`{finetune}`)
-:::
-::: {.column width="45%"}
-**HPC infrastructure:**
-
-- `Apptainer` container images
-- SLURM batch jobs per pipeline stage
-- `{crew}` + `{crew.cluster}` distributed workers
-- `{targets}` caches intermediate results
-
-*[beethoven visnetwork — placeholder]*
-:::
-:::
-
----
 
 ---
 
@@ -589,132 +437,317 @@ Same `dataset_name` ties all three functions together across all 17+ sources.
 ---
 
 
-# Risk Assessment of Wildfires and Autoimmune Disorders {.section-title background-color="#c1440e"}
-
-## Research Question
-
-::: {.columns}
-::: {.column width="55%"}
-> What is the association between **wildfire smoke PM₂.₅** and **immune-mediated disease** hospitalizations in the United States?
-
-**Why this matters:**
-
-- Wildfire smoke is a rapidly growing public health threat
-- Immune-mediated diseases may be particularly sensitive
-- Administrative data provides population-level coverage
-- Direct connection to beethoven-derived exposures
-- Completes the source-to-outcome continuum
-:::
-::: {.column width="45%"}
-*[Wildfire smoke over US — placeholder]*
-:::
-:::
-
-## HCUP: The Health Data
+# PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#0d4b6b"}
 
 ::: {.columns}
 ::: {.column width="60%"}
-**Healthcare Cost and Utilization Project (HCUP)**
+**General Vecchia approximation** *(Katzfuss & Guinness 2021)*
 
-- AHRQ-administered, multi-state database
-- **ED visits** + **inpatient hospitalizations**
-- Aggregated to **ZCTA** level
-- ICD-9 and ICD-10 diagnosis codes
+$$p(\mathbf{y}) \approx \prod_{i=1}^n p(y_i \mid y_{c(i)})$$
 
-**Phenotype classification:**
+Reduces computation: $\mathcal{O}(n^3)$ → $\mathcal{O}(nm^3)$, $m \ll n$
 
-- Algorithm maps ICD codes → phenotype categories
-- Phenotypes: asthma, COPD, autoimmune conditions, allergic disease
-- Validated approach
+**PrestoGP model** *(Messier & Katzfuss 2020, JRSS-A)*
+
+$$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{w} + \boldsymbol{\epsilon}$$
+
+- $\mathbf{w}$: spatiotemporal GP with Matérn covariance
+- $\boldsymbol{\beta}$: estimated via penalized likelihood (LASSO/SCAD/MCP)
+- Variable selection + GP estimation *simultaneously*
 :::
 ::: {.column width="40%"}
-*[HCUP data flowchart — placeholder]*
+*[Vecchia neighbor diagram — placeholder]*
 :::
 :::
 
-## Exposure: Wildfire Smoke PM₂.₅
+## PrestoGP: R Package API
+
+```r
+# Univariate spatiotemporal model
+model <- new("VecchiaModel", n_neighbors = 10)
+model <- prestogp_fit(model, y, X, locs)
+yhat  <- prestogp_predict(model, X_new, locs_new)
+
+# Multivariate (multiple pollutants simultaneously)
+model_mv <- new("MultivariateVecchiaModel", n_neighbors = 10)
+model_mv <- prestogp_fit(model_mv,
+                         y    = list(y_no2, y_pm25),
+                         X    = list(X_no2, X_pm25),
+                         locs = list(locs, locs))
+
+# LOD-censored imputation
+model <- prestogp_fit(model, y_censored, X, locs,
+                      impute.y = TRUE, lod = lod_value)
+```
+
+`github.com/NIEHS/PrestoGP`
+
+## PrestoGP: Applications
 
 ::: {.columns}
-::: {.column width="55%"}
-**Multi-source harmonization at ZCTA level:**
+::: {.column width="50%"}
+**NO₂ Mapping** *(Messier & Katzfuss 2020)*
 
-- **NOAA HMS** — smoke presence / intensity
-- **beethoven** — daily PM₂.₅ estimates
-- **EPA AQS** — ground-level validation
-- Grid → ZCTA aggregation (area-weighted mean)
-- Daily time series, multi-year
+- Continental US ground-level NO₂
+- Penalized LUR + spatiotemporal GP
+- Better CV performance vs. standard LUR
 
-**Additional covariates:**
-
-- Social Deprivation Index
-- RUCA urbanicity codes
-- Temperature, humidity (NARR via amadeus)
+*[Predicted NO₂ surface — placeholder]*
 :::
-::: {.column width="45%"}
-*[Smoke + PM₂.₅ map — placeholder]*
+::: {.column width="50%"}
+**Chlorotriazine Groundwater** *(In Progress)*
+
+> Multivariate & censored geospatial models for data-sparse chemicals: US chlorotriazine groundwater 1990–2022
+
+- Herbicide mixture modeling (atrazine, simazine, …)
+- Sparse + heavily LOD-censored monitoring data
+- Multivariate Matérn cross-covariance
+
+*[Chlorotriazine prediction map — placeholder]*
 :::
 :::
 
-## Statistical Model: Bayesian Poisson + DLNM
+# chopin: Parallel Spatial Computation {.section-title background-color="#2d6a4f"}
+
+## chopin: Parallel Spatial Computation
 
 ::: {.columns}
 ::: {.column width="60%"}
-$$\log(E[Y_{zt}]) = \log(N_{zt}) + \mathbf{cb}(\text{PM}_{zt}, \text{lag}) \cdot \boldsymbol{\beta} + \mathbf{s}(\text{time}) + \mathbf{X}_{zt}\boldsymbol{\gamma}$$
+**C**omputation of spatial data by **H**ierarchical and **O**bjective **P**artitioning of **In**puts for parallel processing
 
-- $Y_{zt}$: hospital visits in ZCTA $z$, day $t$
-- **DLNM** cross-basis: exposure-lag-response surface
-- Bayesian Poisson: full uncertainty propagation
-- ZCTA-level random effects
-- Outputs: **relative risks** + **attributable numbers**
+- **rOpenSci** peer-reviewed R package
+- Splits large spatial datasets into tiles or hierarchical regions
+- Dispatches parallel workers (local or HPC cluster) over partitions
+- Recombines results transparently
+- Integrates with `{targets}` pipelines
+- Powers covariate extraction in **beethoven**
+
+```r
+result <- par_make_gridset(
+  x = aqs_sites,
+  mode = "grid",
+  nx = 10L, ny = 8L,
+  padding = 3000
+)
+```
 :::
 ::: {.column width="40%"}
-*[DLNM exposure-lag surface — placeholder]*
+![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=220 fig-alt="chopin hex logo"}
+
+`docs.ropensci.org/chopin`
+
+`github.com/ropensci/chopin`
 :::
 :::
 
-## Key Results
+# beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#7b4f9e"}
+
+## beethoven: Ensemble Air Quality Pipeline
+
+::: {.columns}
+::: {.column width="60%"}
+**B**uilding an **E**xtensible, r**E**producible, **T**est-driven,
+**H**armonized, **O**pen-source, **V**ersioned, **EN**semble model for air quality
+
+- R package + **`{targets}`** reproducible pipeline
+- National-scale daily **PM₂.₅** predictions
+- Stacked ensemble: base learners + meta learner
+- NIEHS HPC (SLURM + Apptainer containers)
+- Built on **amadeus** (data) + **chopin** (parallel extraction)
+:::
+::: {.column width="40%"}
+![beethoven](images/MessierK_24-2843_R-Package_Hex_Sticker_beethoven.png){width=220 fig-alt="beethoven hex logo"}
+
+`github.com/NIEHS/beethoven`
+:::
+:::
+
+## beethoven: Architecture
+
+```
+amadeus ──► [Download: EPA AQS, MODIS, MERRA-2, NARR, NLCD, HMS ...]
+                  │
+chopin  ──► [Covariate calculation at AQS sites & prediction grid]
+                  │
+            [Base Learners: LightGBM | Neural Net | glmnet | SVM]
+                  │
+            [Meta Learner — stacked ensemble]
+                  │
+            National daily PM2.5 predictions + uncertainty
+```
+
+*`{targets}` manages the full dependency graph — every step cached*
+
+## beethoven: Ensemble Model
+
+::: {.columns}
+::: {.column width="55%"}
+**Stacked ensemble via `{tidymodels}`**
+
+**Base learners:**
+
+- LightGBM (gradient boosting)
+- Neural networks (`{brulee}` / `{torch}`)
+- Regularized regression (glmnet)
+- Support vector machines
+
+**Validation:**
+
+- Spatial cross-validation (`{spatialsample}`)
+- Hyperparameter tuning (`{finetune}`)
+:::
+::: {.column width="45%"}
+**HPC infrastructure:**
+
+- `Apptainer` container images
+- SLURM batch jobs per pipeline stage
+- `{crew}` + `{crew.cluster}` distributed workers
+- `{targets}` caches intermediate results
+
+*[beethoven visnetwork — placeholder]*
+:::
+:::
+
+---
+
+---
+
+# GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#c1440e"}
+
+## GeoTox: Framework Overview
+
+::: {.columns}
+::: {.column width="60%"}
+**Connecting spatiotemporal exposure to molecular risk**
+
+The **GeoTox** source-to-outcome framework:
+
+1. **Exposure** — spatially-referenced chemical concentrations
+2. **Internal dose** — toxicokinetic modeling (HTTK)
+3. **Dose-response** — in vitro concentration-response (RGCA for mixtures)
+4. **Risk** — individual and population-level risk estimates
+
+**R package on CRAN** (S3 OOP):
+
+```r
+install.packages("GeoTox")
+```
+
+> Messier, Reif, and Marvel (2025). *Human Genomics*.  
+> Eccles et al. (2023). *Science of the Total Environment*.
+:::
+::: {.column width="40%"}
+![GeoTox](images/GeoToxHex.png){width=220 fig-alt="GeoTox hex logo"}
+
+`github.com/NIEHS/GeoTox`
+
+`niehs.github.io/GeoTox`
+:::
+:::
+
+## GeoTox: Data Inputs
+
+::: {.columns}
+::: {.column width="60%"}
+**Required inputs for a GeoTox analysis:**
+
+- **Chemical concentrations** — spatiotemporal exposure estimates (e.g., from amadeus + beethoven)
+- **Toxicokinetic parameters** — HTTK model outputs (age, sex, body weight distributions)
+- **In vitro concentration-response** — ToxCast / ICE assay data
+- **Population data** — census-based age/sex distributions per geographic unit
+
+**Geographic resolution:**
+
+- County, ZCTA, grid cell, or custom spatial unit
+- Integrates with any spatially-referenced exposure dataset
+:::
+::: {.column width="40%"}
+*[GeoTox data input diagram — placeholder]*
+:::
+:::
+
+## GeoTox: Methodology
+
+::: {.columns}
+::: {.column width="55%"}
+**Step 1 — Exposure to internal dose:**
+
+$$C_{internal} = f_{TK}(C_{ambient}, 	ext{age}, 	ext{sex}, 	ext{BW})$$
+
+**Step 2 — Mixture dose-response (RGCA):**
+
+$$E[	ext{response}] = 	ext{RGCA}(C_1, C_2, \ldots, C_k)$$
+
+- Reflected Generalized Concentration Addition
+- Handles partial agonists and mixture interactions
+
+**Step 3 — Population risk:**
+
+$$	ext{Risk}_{geo} = \sum_{i} w_i \cdot P(	ext{response}_i > 	ext{threshold})$$
+
+:::
+::: {.column width="45%"}
+*[GeoTox workflow schematic — placeholder]*
+:::
+:::
+
+## GeoTox: Analysis Walk-Through
+
+::: {.columns}
+::: {.column width="55%"}
+**Example analysis: air toxics risk in North Carolina**
+
+```r
+library(GeoTox)
+
+# 1. Prepare exposure data
+geoTox_data <- prep_exposure(
+  conc = air_toxics_conc,
+  locs = nc_counties
+)
+
+# 2. Run toxicokinetic simulation
+geoTox_data <- sim_internal_dose(
+  geoTox_data,
+  age = census_age_distributions
+)
+
+# 3. Compute mixture dose-response
+geoTox_data <- calc_concentration_response(geoTox_data)
+
+# 4. Estimate population risk
+risk <- calc_risk(geoTox_data)
+```
+:::
+::: {.column width="45%"}
+*[NC county risk map — placeholder]*
+:::
+:::
+
+## GeoTox: Results
 
 ::: {.columns}
 ::: {.column width="50%"}
-**Findings** *(placeholder — to be updated)*
+**Population-level outputs:**
 
-- Association between wildfire smoke PM₂.₅ and [phenotype] ED visits
-- Distributed lag effects peaking at lag [X] days
-- Attributable numbers during high smoke events
-- Effect modification by urbanicity / deprivation
+- Predicted response probability per geographic unit
+- Uncertainty bounds from Monte Carlo simulation
+- Disaggregation by demographic group (age, sex)
+
+*[County-level risk choropleth — placeholder]*
 :::
 ::: {.column width="50%"}
-*[Forest plot of RRs by phenotype — placeholder]*
+**Sensitivity analysis:**
 
-*[Exposure-lag heatmap — placeholder]*
+- Contribution of individual chemicals to mixture risk
+- Influence of toxicokinetic variability vs. exposure uncertainty
+
+*[Sensitivity / contribution bar chart — placeholder]*
 :::
 :::
 
 ::: {.callout-note}
-Results and figures to be added as analysis finalizes.
-:::
-
-## hcup_ap: Pipeline & Data Management
-
-::: {.columns}
-::: {.column width="60%"}
-**`github.com/NIEHS/hcup_ap`**
-
-- `{targets}` pipeline: separate data prep + analysis stages
-- Designed for secure / controlled data environments
-- HCUP restricted use data agreement
-
-```
-hcup_ap/
-├── _targets_data.R      # data prep
-├── _targets_analysis.R  # analysis
-├── R/                   # functions
-└── vignettes/
-```
-:::
-::: {.column width="40%"}
-*[hcup_ap pipeline diagram — placeholder]*
-:::
+Results and figures to be updated as analyses are finalized.
 :::
 
 ---
@@ -786,38 +819,6 @@ Chemical mixture → molecular target → population risk
 :::
 
 `github.com/NIEHS` · `niehs.github.io/SET`
-:::
-:::
-
-## GeoTox: Source-to-Outcome Risk Modeling
-
-::: {.columns}
-::: {.column width="60%"}
-**Connecting spatiotemporal exposure to molecular risk**
-
-The **GeoTox** source-to-outcome framework:
-
-1. **Exposure** — spatially-referenced chemical concentrations
-2. **Internal dose** — toxicokinetic modeling
-3. **Dose-response** — in vitro concentration-response (RGCA for mixtures)
-4. **Risk** — individual and population-level risk estimates
-
-**R package on CRAN** (S3 OOP):
-
-```r
-install.packages("GeoTox")
-```
-
-> Messier, Reif, and Marvel (2025). *Human Genomics*.
->
-> Eccles et al. (2023). *Science of the Total Environment*.
-:::
-::: {.column width="40%"}
-![GeoTox](images/GeoToxHex.png){width=220 fig-alt="GeoTox hex logo"}
-
-`github.com/NIEHS/GeoTox`
-
-`niehs.github.io/GeoTox`
 :::
 :::
 
