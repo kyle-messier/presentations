@@ -28,7 +28,7 @@ execute:
   message: false
 ---
 
-# Background {.section-title background-color="#1a3a5c"}
+# Background {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -141,7 +141,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 - **Biostatistics and Computational Biology Branch**
 - Part of the NIH **Stadtman Investigator** program
 - Research focus:
-  - Scalable spatiotemporal exposure models
+  - Scalable spatiotemporal exposure models for exposomics
   - Open-source software for environmental health community (exposure, modeling, toxicology, and epidemiology)
    - Open-source software for spatial analysis 
   - Source-to-outcome risk modeling (
@@ -154,74 +154,201 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## SET Group: Software in Development
+## Exposomics 
 
-::: {.columns}
-::: {.column width="52%"}
-| # | Package | Description | Status |
-|---|---------|-------------|--------|
-| 1 | [**amadeus**](https://niehs.github.io/amadeus/) | Data access & processing for 17+ env. datasets | Active, CRAN |
-| 2 | [**beethoven**](https://niehs.github.io/beethoven/) | Ensemble air quality model pipeline | WIP |
-| 3 | [**chopin**](https://docs.ropensci.org/chopin/) | Parallel spatial computation | Active, CRAN, rOpenSci |
-| 4 | [**GeoTox**](https://niehs.github.io/GeoTox) | Source-to-outcome risk modeling framework | Active, CRAN |
-| 5 | [**RGCA**](https://niehs.github.io/RGCA) | Reflected GCA for chemical mixture dose-response | Active, GitHub |
-| 6 | [**PrestoGP**](https://niehs.github.io/PrestoGP/) | Scalable penalized spatiotemporal GP regression | WIP |
-:::
-::: {.column width="48%"}
-![](images/SET-software-chorus.png){fig-align="center" width="100%"}
-:::
-:::
-
-::: {.notes}
-All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
-:::
+<!-- PLACEHOLDER FOR EXPOSOMICS SLIDE -->
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## The Exposome Cascade: Source-to-Outcome Framework
+
+# The Exposome Cascade: Source-to-Outcome Framework {.section-title background-color="#518611"}
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## Source-to-Outcome Framework
 
 ![](images/Exposome-Cascade.png){fig-align="center" height="320"}
 
-**Why a source-to-outcome approach?**
-
-- Environmental sources → ambient concentrations → internal exposures → biological responses → health outcomes
-- Traditional paradigm: **one pollutant, one outcome**, cross-sectional
-- Modern challenge: **multi-source, multi-pathway, multi-scale** complexity
-- Requires harmonized data pipelines, scalable computation, and validated statistical models
-
-**Our research spans the full cascade:**
-
-- 📥 **Data** — standardized, harmonized geospatial inputs (amadeus)
-- ⚙️ **Computation** — parallel processing at national scale (chopin)
-- 📊 **Exposure models** — spatiotemporal GP & ensemble ML (PrestoGP, beethoven)
-- 🧬 **Risk modeling** — mixture toxicology to population risk (GeoTox)
-- 🏥 **Health outcomes** — wildfire smoke × immune disease (hcup_ap)
-
-::: {.notes}
-The Exposome Cascade is the conceptual framework unifying all the tools and methods we'll discuss. The key insight is that answering "how does pollution affect health?" requires being rigorous at every stage of this chain — data access, exposure estimation, and epidemiologic analysis.
+::: {style="display: flex; align-items: center; justify-content: center; margin-top: 30px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+**A Cascade of Events: The Events MUST Occur In This Order**
+:::
 :::
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## Research Vision: Source-to-Outcome Continuum
 
-::: {.fragment}
-**The central question:** How do we connect environmental sources of exposure to human health outcomes in a rigorous, scalable, and reproducible way?
+## Source-to-Outcome Framework
+
+::: {style="display: flex; align-items: center; justify-content: center; min-height: 500px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+**A general, extensible framework for modeling exposomic risk from the exogenous source through biological mechanism to health outcomes**
+:::
 :::
 
-. . .
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 
-| Stage | Tool | Role |
-|-------|------|------|
-| 📥 Data access | **amadeus** | Standardize 17+ geospatial sources |
-| ⚙️ Computation | **chopin** | Parallel spatial extraction at scale |
-| 📊 Exposure models | **PrestoGP** / **beethoven** | Spatiotemporal GP + ensemble PM₂.₅ |
-| 🧬 Risk modeling | **GeoTox** | Chemical mixture → molecular target → risk |
-| 🏥 Health outcomes | **hcup_ap** | Wildfire smoke × immune disease epi |
+## Research Vision: Source-to-Outcome Framework
 
----
+::: {style="text-align: center; margin-top: 10px;"}
+![](images/field-of-dreams.webp){fig-align="center" height="240"}
+:::
 
-# Developing Accessible Geospatial Methods and Data {.section-title background-color="#2d6a4f"}
+::: {style="display: flex; align-items: center; justify-content: center; margin-top: 20px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 15px; padding: 20px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85em;"}
+**The central objective:** Developing a framework based on rigorous methods and open source, accessible software that can integrate the diverse data sources in environmental health to model the expsomic risk from the exogenous source through biological mechanisms to health outcomes.
+:::
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## Source-to-Outcome: GeoTox Software
+
+![](images/GeoTox.png){fig-align="center" height="600"}
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## GeoTox as an extensible, flexible modeling framework
+
+::: {style="text-align: center; margin: 40px auto; max-width: 60%; font-size: 1.1em; line-height: 2.2;"}
+
+**External Sources**  
+↓  
+*Geospatial Modeling*  
+↓  
+**External Exposure**  
+↓  
+*Behavioral and Physiological Modeling*  
+↓  
+**Internal Exposure**  
+↓  
+*PBTK*  
+↓  
+**Target Organ Dose**  
+↓  
+*IVIVE*  
+↓  
+**In vitro Equivalent Concentration**  
+↓  
+*Mixtures Modeling*  
+↓  
+**Concentration Response**  
+↓  
+*Risk Assessment*  
+↓  
+**Geospatial Risk Map**
+
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## GeoTox: Exposure Modeling {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+::: {style="text-align: center; margin: 20px auto; font-size: 1em; line-height: 2.2;"}
+
+**External Sources**  
+↓  
+*Geospatial Modeling*  
+↓  
+**External Exposure**  
+↓  
+*Behavioral and Physiological Modeling*  
+↓  
+**Internal Exposure**
+
+:::
+:::
+::: {.column width="50%"}
+
+**Exposure Assessment Components:**
+
+- **External Sources** — Environmental monitoring data, emissions inventories
+- **Geospatial Modeling** — Spatial interpolation, predictive models
+- **Behavioral/Physiological** — Activity patterns, inhalation rates, dermal contact
+
+**Flexibility:** Plug in any exposure model (LUR, machine learning, dispersion models)
+
+:::
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## GeoTox: Toxicokinetic & Dose-Response {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+::: {style="text-align: center; margin: 20px auto; font-size: 1em; line-height: 2.2;"}
+
+**Internal Exposure**  
+↓  
+*PBTK*  
+↓  
+**Target Organ Dose**  
+↓  
+*IVIVE*  
+↓  
+**In vitro Equivalent Concentration**  
+↓  
+*Mixtures Modeling*  
+↓  
+**Concentration Response**
+
+:::
+:::
+::: {.column width="50%"}
+
+**Toxicology Components:**
+
+- **PBTK** — Physiologically-based toxicokinetic models (HTTK)
+- **IVIVE** — In vitro to in vivo extrapolation
+- **Mixtures Modeling** — RGCA for multi-chemical interactions
+
+**Flexibility:** Swap in alternative TK models, different dose-response functions
+
+:::
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## GeoTox: Risk Assessment {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+::: {style="text-align: center; margin: 20px auto; font-size: 1em; line-height: 2.2;"}
+
+**Concentration Response**  
+↓  
+*Risk Assessment*  
+↓  
+**Geospatial Risk Map**
+
+:::
+:::
+::: {.column width="50%"}
+
+**Risk Characterization:**
+
+- **Population-level risk** — Monte Carlo simulation across demographics
+- **Geospatial mapping** — County, ZCTA, grid-level risk surfaces
+- **Uncertainty quantification** — Propagate variability through entire cascade
+
+**Output:** Spatially-resolved risk estimates ready for public health decision-making
+
+:::
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+# Developing Accessible Geospatial Methods and Data {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -351,10 +478,36 @@ Chemical mixture dose-response
 
 ---
 
-# Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#6b3fa0"}
+
+# Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
+## SET Group: Software in Development
+
+::: {.columns}
+::: {.column width="52%"}
+| # | Package | Description | Status |
+|---|---------|-------------|--------|
+| 1 | [**amadeus**](https://niehs.github.io/amadeus/) | Data access & processing for 17+ env. datasets | Active, CRAN |
+| 2 | [**beethoven**](https://niehs.github.io/beethoven/) | Ensemble air quality model pipeline | WIP |
+| 3 | [**chopin**](https://docs.ropensci.org/chopin/) | Parallel spatial computation | Active, CRAN, rOpenSci |
+| 4 | [**GeoTox**](https://niehs.github.io/GeoTox) | Source-to-outcome risk modeling framework | Active, CRAN |
+| 5 | [**RGCA**](https://niehs.github.io/RGCA) | Reflected GCA for chemical mixture dose-response | Active, GitHub |
+| 6 | [**PrestoGP**](https://niehs.github.io/PrestoGP/) | Scalable penalized spatiotemporal GP regression | WIP |
+:::
+::: {.column width="48%"}
+![](images/SET-software-chorus.png){fig-align="center" width="100%"}
+:::
+:::
+
+::: {.notes}
+All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
 ## Motivation: Barriers to Geospatial Data
 
 ::: {.columns}
@@ -471,7 +624,7 @@ Same `dataset_name` ties all three functions together across all 17+ sources.
 ---
 
 
-# PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#0d4b6b"}
+# PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#518611"}
 
 ::: {.columns}
 ::: {.column width="60%"}
@@ -545,7 +698,7 @@ model <- prestogp_fit(model, y_censored, X, locs,
 :::
 :::
 
-# chopin: Parallel Spatial Computation {.section-title background-color="#2d6a4f"}
+# chopin: Parallel Spatial Computation {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -580,7 +733,7 @@ result <- par_make_gridset(
 :::
 :::
 
-# beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#7b4f9e"}
+# beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -658,7 +811,7 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 
 ---
 
-# GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#c1440e"}
+# GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -808,7 +961,7 @@ Results and figures to be updated as analyses are finalized.
 
 ---
 
-# Conclusions {.section-title background-color="#1a3a5c"}
+# Conclusions {.section-title background-color="#518611"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
