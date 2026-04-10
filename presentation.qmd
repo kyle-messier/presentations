@@ -30,6 +30,8 @@ execute:
 
 # Background {.section-title background-color="#1a3a5c"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Career Overview
 
 ::: {.columns}
@@ -72,6 +74,8 @@ execute:
 Introduce the narrative arc: each career stage added a new tool or method that feeds into the current research program — ultimately a source-to-outcome story.
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## UNC Chapel Hill — PhD
 
 ::: {.columns}
@@ -89,6 +93,8 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Postdoc — Environmental Defense Fund
 
 ::: {.columns}
@@ -106,6 +112,8 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Oregon State University — K99/R00
 
 
@@ -121,6 +129,8 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 > *Messier & Katzfuss (2021). Scalable penalized spatiotemporal land-use regression for ground-level nitrogen dioxide. Annals of Applied Statistics*
 
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## NIEHS — Stadtman Tenure-Track Investigator
 
 ::: {.columns}
@@ -142,6 +152,8 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## SET Group: Software in Development
 
 ::: {.columns}
@@ -164,6 +176,8 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## The Exposome Cascade: Source-to-Outcome Framework
 
 ![](images/Exposome-Cascade.png){fig-align="center" height="320"}
@@ -187,6 +201,8 @@ All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopi
 The Exposome Cascade is the conceptual framework unifying all the tools and methods we'll discuss. The key insight is that answering "how does pollution affect health?" requires being rigorous at every stage of this chain — data access, exposure estimation, and epidemiologic analysis.
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Research Vision: Source-to-Outcome Continuum
 
 ::: {.fragment}
@@ -207,6 +223,8 @@ The Exposome Cascade is the conceptual framework unifying all the tools and meth
 
 # Developing Accessible Geospatial Methods and Data {.section-title background-color="#2d6a4f"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Why Accessible Methods and Data?
 
 ::: {.columns}
@@ -239,6 +257,8 @@ The Exposome Cascade is the conceptual framework unifying all the tools and meth
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## CHORDS: Connecting Health Outcomes Research Data Systems
 
 ::: {.columns}
@@ -262,6 +282,8 @@ The Exposome Cascade is the conceptual framework unifying all the tools and meth
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## NIH HEW Data Accelerator
 
 ::: {.columns}
@@ -285,6 +307,8 @@ The Exposome Cascade is the conceptual framework unifying all the tools and meth
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Our Packages: Accessible Tools Across the Exposure Pipeline
 
 ::: {.columns}
@@ -329,6 +353,8 @@ Chemical mixture dose-response
 
 # Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#6b3fa0"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Motivation: Barriers to Geospatial Data
 
 ::: {.columns}
@@ -352,6 +378,8 @@ Chemical mixture dose-response
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## amadeus: Overview
 
 ::: {.columns}
@@ -371,6 +399,8 @@ Chemical mixture dose-response
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## amadeus: Data Sources
 
 | Source | File Type | Genre | Extent |
@@ -389,6 +419,8 @@ Chemical mixture dose-response
 | Köppen-Geiger Classification | GeoTIFF | Climate Classification | Global |
 | NASA GEOS-CF | netCDF | Atmosphere | Global |
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## amadeus: Workflow in Practice
 
 ```r
@@ -414,6 +446,8 @@ covars <- calculate_covariates(
 
 Same `dataset_name` ties all three functions together across all 17+ sources.
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## amadeus: Publication & Impact
 
 ::: {.columns}
@@ -460,6 +494,8 @@ $$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{w} + \boldsymbol{\epsilon}
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## PrestoGP: R Package API
 
 ```r
@@ -482,6 +518,8 @@ model <- prestogp_fit(model, y_censored, X, locs,
 
 `github.com/NIEHS/PrestoGP`
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## PrestoGP: Applications
 
 ::: {.columns}
@@ -509,6 +547,8 @@ model <- prestogp_fit(model, y_censored, X, locs,
 
 # chopin: Parallel Spatial Computation {.section-title background-color="#2d6a4f"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## chopin: Parallel Spatial Computation
 
 ::: {.columns}
@@ -542,6 +582,8 @@ result <- par_make_gridset(
 
 # beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#7b4f9e"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## beethoven: Ensemble Air Quality Pipeline
 
 ::: {.columns}
@@ -562,6 +604,8 @@ result <- par_make_gridset(
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## beethoven: Architecture
 
 ```
@@ -578,6 +622,8 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 
 *`{targets}` manages the full dependency graph — every step cached*
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## beethoven: Ensemble Model
 
 ::: {.columns}
@@ -614,6 +660,8 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 
 # GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#c1440e"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## GeoTox: Framework Overview
 
 ::: {.columns}
@@ -645,6 +693,8 @@ install.packages("GeoTox")
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## GeoTox: Data Inputs
 
 ::: {.columns}
@@ -666,6 +716,8 @@ install.packages("GeoTox")
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## GeoTox: Methodology
 
 ::: {.columns}
@@ -691,6 +743,8 @@ $$	ext{Risk}_{geo} = \sum_{i} w_i \cdot P(	ext{response}_i > 	ext{threshold})$$
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## GeoTox: Analysis Walk-Through
 
 ::: {.columns}
@@ -724,6 +778,8 @@ risk <- calc_risk(geoTox_data)
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## GeoTox: Results
 
 ::: {.columns}
@@ -754,6 +810,8 @@ Results and figures to be updated as analyses are finalized.
 
 # Conclusions {.section-title background-color="#1a3a5c"}
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Source-to-Outcome: The Full Picture
 
 . . .
@@ -793,6 +851,8 @@ Chemical mixture → molecular target → population risk
 
 > **Open-source tools at every stage of the source-to-outcome continuum.**
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Reproducible & Open-Source Tools
 
 ::: {.columns}
@@ -822,6 +882,8 @@ Chemical mixture → molecular target → population risk
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Future Directions
 
 ::: {.columns}
@@ -855,6 +917,8 @@ Chemical mixture → molecular target → population risk
 :::
 :::
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Acknowledgments
 
 ::: {.columns}
@@ -896,6 +960,8 @@ Chemical mixture → molecular target → population risk
 
 ---
 
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
 ## Questions?
 
 ::: {.columns}
