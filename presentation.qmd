@@ -28,7 +28,7 @@ execute:
   message: false
 ---
 
-# Background {.section-title background-color="#518611"}
+# Background {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -161,7 +161,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
 
-# The Exposome Cascade: Source-to-Outcome Framework {.section-title background-color="#518611"}
+# The Exposome Cascade: Source-to-Outcome Framework {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -171,7 +171,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 ![](images/Exposome-Cascade.png){fig-align="center" height="320"}
 
 ::: {style="display: flex; align-items: center; justify-content: center; margin-top: 30px;"}
-::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
 **A Cascade of Events: The Events MUST Occur In This Order**
 :::
 :::
@@ -182,7 +182,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 ## Source-to-Outcome Framework
 
 ::: {style="display: flex; align-items: center; justify-content: center; min-height: 500px;"}
-::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
 **A general, extensible framework for modeling exposomic risk from the exogenous source through biological mechanism to health outcomes**
 :::
 :::
@@ -197,7 +197,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 :::
 
 ::: {style="display: flex; align-items: center; justify-content: center; margin-top: 20px;"}
-::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 15px; padding: 20px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85em;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 20px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85em;"}
 **The central objective:** Developing a framework based on rigorous methods and open source, accessible software that can integrate the diverse data sources in environmental health to model the expsomic risk from the exogenous source through biological mechanisms to health outcomes.
 :::
 :::
@@ -207,12 +207,24 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 ## Source-to-Outcome: GeoTox Software
 
-![](images/GeoTox.png){fig-align="center" height="600"}
+![](images/GeoTox.png){fig-align="center" height="480"}
+
+::: {style="display: flex; gap: 15px; margin: 20px auto; max-width: 95%; justify-content: center;"}
+
+::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 10px; padding: 6px; flex: 1; font-size: 7pt;"}
+Eccles, K. M., Karmaus, A. L., Kleinstreuer, N. C., Parham, F., Rider, C. V., Wambaugh, J. F., & Messier, K. P. (2023). A geospatial modeling approach to quantifying the risk of exposure to environmental chemical mixtures via a common molecular target. *Science of The Total Environment*, 855, 158905.
+:::
+
+::: {style="background-color: #f8f9fa; border: 2px solid #518611; border-radius: 10px; padding: 6px; flex: 1; font-size: 7pt;"}
+Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-source software for connecting spatiotemporal exposure to individual and population-level risk. *Human Genomics*.
+:::
+
+:::
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
 
-## GeoTox as an extensible, flexible modeling framework
+## An extensible, flexible modeling framework
 
 ::: {style="text-align: center; margin: 40px auto; max-width: 60%; font-size: 1.1em; line-height: 2.2;"}
 
@@ -348,7 +360,126 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-# Developing Accessible Geospatial Methods and Data {.section-title background-color="#518611"}
+
+
+## An extensible, flexible modeling framework
+
+::: {style="display: flex; align-items: center; justify-content: center; margin-top: 20px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 20px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85em;"}
+**Other Environmental Risk Assessment Frameworks as Special Cases of Source-to-Outcome Modeling** 
+:::
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## Classic Spatial Epidemiology
+
+::: {style="text-align: center; margin: 40px auto; max-width: 60%; font-size: 1.1em; line-height: 2.2;"}
+
+**External Sources**  
+↓  
+*Geospatial Modeling*  
+↓  
+**External Exposure**  
+↓  
+*Exposure-Response Modeling*  
+↓  
+**Concentration Response**  
+↓  
+*Risk Assessment*  
+↓  
+**Geospatial Risk Map**
+
+:::
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## Spatial Epidemiology with Behavioral Exposure
+
+::: {style="text-align: center; margin: 40px auto; max-width: 60%; font-size: 1.1em; line-height: 2.2;"}
+
+
+**External Sources**  
+↓  
+*Geospatial Modeling*  
+↓  
+**External Exposure**  
+↓  
+*Behavioral and Physiological Modeling*  
+↓  
+**Internal Exposure**  
+↓  
+*Exposure-Response Modeling*  
+↓  
+**Concentration Response**  
+↓  
+*Risk Assessment*  
+↓  
+**Geospatial Risk Map**
+
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## Molecular Epidemiology
+
+::: {style="text-align: center; margin: 40px auto; max-width: 60%; font-size: 1.1em; line-height: 2.2;"}
+
+
+**Target Organ Dose (Measured)**  
+↓  
+*Concentration Response Modeling*  
+↓  
+**Concentration Response**  
+↓  
+*Risk Assessment*  
+
+
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## Spatial Epidemiology with Mechanistic Modeling
+
+::: {style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 30px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+**Assume individuals have measured biomarkers or biological data (e.g. epigenetic, transcriptomic, proteomic)**
+:::
+:::
+
+::: {style="text-align: center; margin: 40px auto; max-width: 60%; font-size: 1.1em; line-height: 2.2;"}
+
+**External Sources**  
+↓  
+*Geospatial Modeling*  
+↓  
+**External Exposure**  
+↓  
+*Mechanistic Modeling*  
+↓  
+**Mechanism Endpoint**  
+↓  
+*Concentration Response Modeling*  
+↓  
+**Concentration Response**  
+↓  
+*Risk Assessment*  
+
+:::
+
+::: {style="display: flex; justify-content: center; margin-top: 30px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+**Relates External Exposure to Individual Mechanism Endpoints**
+:::
+:::
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+# Developing Accessible Geospatial Methods and Data {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -474,19 +605,10 @@ Chemical mixture dose-response
 :::
 :::
 
+<br>
 
+**Detailed Package Information:**
 
----
-
-
-# Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#518611"}
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
-## SET Group: Software in Development
-
-::: {.columns}
-::: {.column width="52%"}
 | # | Package | Description | Status |
 |---|---------|-------------|--------|
 | 1 | [**amadeus**](https://niehs.github.io/amadeus/) | Data access & processing for 17+ env. datasets | Active, CRAN |
@@ -495,15 +617,14 @@ Chemical mixture dose-response
 | 4 | [**GeoTox**](https://niehs.github.io/GeoTox) | Source-to-outcome risk modeling framework | Active, CRAN |
 | 5 | [**RGCA**](https://niehs.github.io/RGCA) | Reflected GCA for chemical mixture dose-response | Active, GitHub |
 | 6 | [**PrestoGP**](https://niehs.github.io/PrestoGP/) | Scalable penalized spatiotemporal GP regression | WIP |
-:::
-::: {.column width="48%"}
-![](images/SET-software-chorus.png){fig-align="center" width="100%"}
-:::
-:::
 
-::: {.notes}
-All packages on github.com/NIEHS. amadeus, chopin, and GeoTox are on CRAN. chopin is rOpenSci certified.
-:::
+
+
+---
+
+
+# Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#3d763d"}
+
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -624,7 +745,7 @@ Same `dataset_name` ties all three functions together across all 17+ sources.
 ---
 
 
-# PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#518611"}
+# PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#3d763d"}
 
 ::: {.columns}
 ::: {.column width="60%"}
@@ -698,7 +819,7 @@ model <- prestogp_fit(model, y_censored, X, locs,
 :::
 :::
 
-# chopin: Parallel Spatial Computation {.section-title background-color="#518611"}
+# chopin: Parallel Spatial Computation {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -733,7 +854,7 @@ result <- par_make_gridset(
 :::
 :::
 
-# beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#518611"}
+# beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -811,7 +932,7 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 
 ---
 
-# GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#518611"}
+# GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -961,7 +1082,7 @@ Results and figures to be updated as analyses are finalized.
 
 ---
 
-# Conclusions {.section-title background-color="#518611"}
+# Conclusions {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
