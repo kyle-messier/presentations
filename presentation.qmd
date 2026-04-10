@@ -156,7 +156,7 @@ Introduce the narrative arc: each career stage added a new tool or method that f
 <!--------------------------------------------------------------------------->
 ## Exposomics 
 
-<!-- PLACEHOLDER FOR EXPOSOMICS SLIDE -->
+![](images/exposomics.jpg){fig-align="center" width="90%"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -364,7 +364,7 @@ Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-so
 
 ## An extensible, flexible modeling framework
 
-::: {style="display: flex; align-items: center; justify-content: center; margin-top: 20px;"}
+::: {style="display: flex; align-items: center; justify-content: center; min-height: 500px;"}
 ::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 20px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.85em;"}
 **Other Environmental Risk Assessment Frameworks as Special Cases of Source-to-Outcome Modeling** 
 :::
@@ -485,13 +485,15 @@ Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-so
 <!--------------------------------------------------------------------------->
 ## Why Accessible Methods and Data?
 
-::: {.columns}
-::: {.column width="55%"}
-**The gap:**
+1) Source-to-Outcome Modeling is clearly a complex problem.
+2) There are many data sources, methods, and software to address each step in source-to-outcome modeling 
+3) Documented and Open-Source tools and pipelines are needed to ensure teams can build upon each other
+4) Accessible methods and data enable reproducible and scalable research
 
-- Statistical innovation in spatiotemporal modeling outpaces adoption
-- State-of-the-art methods locked in papers — not usable software
-- Exposure scientists, epidemiologists, and toxicologists need tools they can *actually run*
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
+## FAIR Data and Software
 
 **FAIR+ Principles:**
 
@@ -501,72 +503,12 @@ Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-so
 - **R**eusable — documented, versioned, tested, containerized
 - **+Reproducible** — `{targets}` pipelines, Apptainer containers, HPC-ready
 
-:::
-::: {.column width="45%"}
 
-| Package | Method domain |
-|---------|--------------|
-| **amadeus** | Geospatial data access |
-| **chopin** | Parallel spatial computation |
-| **beethoven** | Ensemble air quality modeling |
-| **PrestoGP** | Scalable spatiotemporal GP |
-| **GeoTox** | Source-to-outcome risk |
-
-:::
-:::
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## CHORDS: Connecting Health Outcomes Research Data Systems
 
-::: {.columns}
-::: {.column width="60%"}
-**Program Overview**
 
-- NIEHS initiative to build scalable data infrastructure linking environmental exposures to health outcomes
-- Focus: patient-centered outcomes research at the intersection of environment and health
-- Harmonizes exposure data with clinical and claims-based health records
-
-**Key Aims:**
-
-- Standardize data access across environmental and health databases
-- Enable reproducible linkage of exposures to health records (e.g., HCUP, Medicare, Medicaid)
-- Support open-science workflows at national scale
-
-*[CHORDS overview figure — placeholder]*
-:::
-::: {.column width="40%"}
-*[CHORDS program diagram — placeholder]*
-:::
-:::
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
-## NIH HEW Data Accelerator
-
-::: {.columns}
-::: {.column width="60%"}
-**Health, Exposure, and Well-being (HEW) Data Accelerator**
-
-- NIH-wide initiative accelerating linkage of environmental exposure data with health outcomes
-- Brings together data systems, methods, and infrastructure across NIH institutes
-- Enables large-scale analyses connecting EPA, NOAA, and NASA data to biomedical records
-
-**Role of SET Group:**
-
-- Contributing exposure modeling pipelines (amadeus, beethoven)
-- Providing spatiotemporal methods infrastructure
-- Supporting open-source data access tools for consortium use
-
-*[HEW Data Accelerator overview — placeholder]*
-:::
-::: {.column width="40%"}
-*[HEW program schematic — placeholder]*
-:::
-:::
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
 ## Our Packages: Accessible Tools Across the Exposure Pipeline
 
 ::: {.columns}
@@ -622,6 +564,12 @@ Chemical mixture dose-response
 
 ---
 
+# Building the Steps {.section-title background-color="#3d763d"}
+
+1) Amadeus 
+2) PrestoGP 
+3) Beethoven 
+4) GeoTox 
 
 # Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#3d763d"}
 
@@ -693,32 +641,95 @@ Chemical mixture dose-response
 | Köppen-Geiger Classification | GeoTIFF | Climate Classification | Global |
 | NASA GEOS-CF | netCDF | Atmosphere | Global |
 
+**Many more datasets are being added**
+*Cropland, MODIS/VIIRS Fire, EDGAR Emissions, Drought* 
+
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
 ## amadeus: Workflow in Practice
 
-```r
-# 1. Download NARR snow water equivalent data
+::: {.panel-tabset}
+
+## Workflow Code
+
+```{r gridmet-tmmx-workflow, echo=TRUE, eval=FALSE}
+#| code-line-numbers: "|3-11|13-17|19-29"
+
+# Step 2: Download and process maximum temperature (tmmx)
 download_data(
-  dataset_name = "narr", year = 2022,
-  variable = "weasd", directory_to_save = "/data/narr/",
-  acknowledgement = TRUE, download = TRUE
+  dataset_name = "gridmet",
+  variable = "tmmx",
+  year = 2023,
+  directory_to_save = data_dir
 )
 
-# 2. Process to standardized SpatRaster
-weasd <- process_covariates(
-  covariate = "narr", date = c("2022-01-01", "2022-01-05"),
-  variable = "weasd", path = "/data/narr/weasd/"
+# Process tmmx to SpatRaster for summer months
+tmmx_processed <- process_covariates(
+  covariate = "gridmet",
+  variable = "tmmx",
+  date = c("2023-06-01", "2023-08-31"),
+  path = file.path(data_dir, "tmmx")
 )
 
-# 3. Extract values at monitoring site locations
-covars <- calculate_covariates(
-  covariate = "narr", from = weasd,
-  locs = aqs_sites, locs_id = "site_id", radius = 0
+# Step 6: Create H3 hexagonal grid and extract tmmx values
+h3_grid_ca <- polygon_to_cells(ca_counties_sf, res = 6, simple = FALSE)
+
+# Extract tmmx using H3 hexagon polygons (zonal statistics)
+tmmx_h3 <- calculate_gridmet(
+  from = tmmx_processed,
+  locs = h3_grid_ca,
+  locs_id = "h3_address",
+  radius = 0,
+  fun = "mean",
+  geom = FALSE
 )
 ```
 
-Same `dataset_name` ties all three functions together across all 17+ sources.
+**Note, updates are currently in process to allow more flexible space-time summarization with the calculate_* functions.**
+
+## Process tmmx
+
+**Process gridMET tmmx to SpatRaster for summer 2023**
+
+```
+class       : SpatRaster 
+size        : 585, 1386, 92  (nrow, ncol, nlyr)
+resolution  : 0.04166667, 0.04166667  (x, y)
+extent      : -124.7875, -67.0375, 25.04583, 49.42083  (xmin, xmax, ymin, ymax)
+coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+source      : tmmx_2023.nc 
+varname     : tmmx (maximum near-surface air temperature) 
+names       : tmmx_~30601, tmmx_~30602, tmmx_~30603, tmmx_~30604, tmmx_~30605, tmmx_~30606, ... 
+unit        : K 
+depth       : 45076 to 45167 (day [days since 1900-01-01 00:00:00]: 92 steps) 
+time (days) : 2023-06-01 to 2023-08-31 (92 steps) 
+```
+
+- **92 daily layers** of maximum near-surface air temperature in Kelvin
+- Covers CONUS at ~4km resolution (0.0417° grid cells)
+- Summer 2023: June 1 – August 31
+
+## California H3 Grid
+
+![H3 Hexagonal Grid over California](images/cal-hex-01.png){fig-align="center" width="45%"}
+
+**H3 Resolution 6 hexagons** (~36 km² each) covering California
+
+- Uniform spatial sampling with equal-area cells
+- 6 equidistant neighbors per hexagon
+- Hierarchical indexing system for efficient spatial queries
+
+## H3 Hexagon Extraction
+
+![Mean Maximum Temperature - H3 Hexagons](images/cal-hex-02.png){fig-align="center" width="45%"}
+
+**Extract tmmx values using H3 hexagonal grid**
+
+- **Zonal statistics**: Mean temperature calculated across all grid cells within each hexagon
+- Reveals spatial patterns missed by irregular administrative boundaries
+- Summer 2023 mean maximum temperature (°C) across California
+
+:::
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
@@ -736,14 +747,19 @@ Same `dataset_name` ties all three functions together across all 17+ sources.
 - Active development — new sources added regularly
 :::
 ::: {.column width="40%"}
-*[CRAN download stats — placeholder]*
+*8,000+ downloads on CRAN*
 
 `github.com/NIEHS/amadeus`
 :::
 :::
 
----
+# Geospatial External Exposure Models {.section-title background-color="#3d763d"}
 
+## Predicting geospatial external exposure 
+
+1. Land-Use Regression 
+2. Kriging / Gaussian Processes / BME 
+3. Machine Learning methods - e.g. Random Forest, Gradient Boosting, Neural Nets, Ensembles
 
 # PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#3d763d"}
 
@@ -816,41 +832,6 @@ model <- prestogp_fit(model, y_censored, X, locs,
 - Multivariate Matérn cross-covariance
 
 *[Chlorotriazine prediction map — placeholder]*
-:::
-:::
-
-# chopin: Parallel Spatial Computation {.section-title background-color="#3d763d"}
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
-## chopin: Parallel Spatial Computation
-
-::: {.columns}
-::: {.column width="60%"}
-**C**omputation of spatial data by **H**ierarchical and **O**bjective **P**artitioning of **In**puts for parallel processing
-
-- **rOpenSci** peer-reviewed R package
-- Splits large spatial datasets into tiles or hierarchical regions
-- Dispatches parallel workers (local or HPC cluster) over partitions
-- Recombines results transparently
-- Integrates with `{targets}` pipelines
-- Powers covariate extraction in **beethoven**
-
-```r
-result <- par_make_gridset(
-  x = aqs_sites,
-  mode = "grid",
-  nx = 10L, ny = 8L,
-  padding = 3000
-)
-```
-:::
-::: {.column width="40%"}
-![chopin](images/MessierK_24-2843_R-Package_Hex_Sticker_chopin.png){width=220 fig-alt="chopin hex logo"}
-
-`docs.ropensci.org/chopin`
-
-`github.com/ropensci/chopin`
 :::
 :::
 

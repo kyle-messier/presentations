@@ -1,0 +1,567 @@
+---
+title: "Working with GridMET Data for California Counties"
+subtitle: "A Tutorial Using the Amadeus Package"
+author: "Amadeus Package Tutorial"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    embed-resources: true
+    theme: cosmo
+    highlight-style: github
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+This tutorial demonstrates how to use the **amadeus** R package to download, process, and calculate gridMET meteorological data for California counties. gridMET is a high-resolution (~4-km) gridded surface meteorological dataset covering the contiguous United States from 1979-present.
+
+### What You'll Learn
+
+- How to download gridMET data from the Climatology Lab
+- How to process raw netCDF files into usable spatial formats
+- How to extract meteorological values for California counties
+- How to visualize and analyze the results
+
+### Prerequisites
+
+```{r setup}
+# Load required packages
+library(amadeus)
+library(terra)
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# Set random seed for reproducibility
+set.seed(123)
+```
+
+## Step 1: Obtain California County Boundaries
+
+First, we'll get the spatial boundaries for California counties. We'll use the `tigris` package to download county boundaries from the US Census Bureau.
+
+```{r get-counties}
+# Install tigris if not already installed
+if (!require(tigris)) install.packages("tigris")
+library(tigris)
+
+# Download California counties
+# Set options to cache the data
+options(tigris_use_cache = TRUE)
+ca_counties <- counties(state = "CA", cb = TRUE, progress_bar = FALSE)
+
+# Convert to sf object and select key columns
+ca_counties_sf <- st_as_sf(ca_counties) %>%
+  select(GEOID, NAME, ALAND) %>%
+  rename(county_name = NAME, 
+         land_area = ALAND)
+
+# Display first few counties
+head(ca_counties_sf)
+```
+
+```{r plot-counties}
+# Visualize California counties
+ggplot(ca_counties_sf) +
+  geom_sf(fill = "lightblue", color = "white", size = 0.3) +
+  theme_minimal() +
+  labs(title = "California Counties",
+       subtitle = paste(nrow(ca_counties_sf), "counties"))
+```
+
+## Step 2: Download gridMET Data
+
+Now we'll download gridMET data. For this example, we'll download maximum temperature (tmmx) and precipitation (pr) for a specific time period.
+
+```{r setup-download, eval = TRUE}
+# Create a temporary directory for data storage
+# In practice, you'd want to use a permanent location
+print(getwd())
+data_dir <- file.path("tutorials", "gridmet_data")
+dir.create(data_dir, showWarnings = FALSE, recursive = TRUE)
+
+print(paste("Data will be saved to:", data_dir))
+```
+
+### Download Maximum Temperature
+
+```{r download-tmmx, eval=TRUE}
+# Download maximum temperature data
+# Note: This downloads data for 2023
+download_data(
+  dataset_name = "gridmet",
+  variable = "tmmx",
+  year = 2023,
+  directory_to_save = data_dir,
+  acknowledgement = TRUE,
+  download = TRUE,
+  remove_command = TRUE,
+  hash = FALSE
+)
+```
+
+::: {.callout-note}
+## Note on Data Download
+
+The code above is set to `eval=TRUE` because downloading gridMET data can take several minutes and requires significant storage space (~1-2 GB per variable per year). When running this tutorial yourself, set `eval=TRUE` to actually download the data.
+:::
+
+### Download Precipitation
+
+```{r download-pr, eval=TRUE}
+# Download precipitation data
+download_data(
+  dataset_name = "gridmet",
+  variable = "pr",
+  year = 2023,
+  directory_to_save = data_dir,
+  acknowledgement = TRUE,
+  download = TRUE,
+  remove_command = TRUE,
+  hash = FALSE
+)
+```
+
+## Step 3: Process gridMET Data
+
+After downloading, we need to process the raw netCDF files into `SpatRaster` objects that R can work with efficiently.
+
+```{r process-data, eval=TRUE}
+# Process maximum temperature data
+# Let's focus on summer months (June-August 2023)
+tmmx_processed <- process_covariates(
+  covariate = "gridmet",
+  variable = "tmmx",
+  date = c("2023-06-01", "2023-08-31"),
+  path = file.path(data_dir, "tmmx")
+)
+
+# Process precipitation data
+pr_processed <- process_covariates(
+  covariate = "gridmet",
+  variable = "pr",
+  date = c("2023-06-01", "2023-08-31"),
+  path = file.path(data_dir, "pr")
+)
+
+# View the processed data
+print("Maximum Temperature SpatRaster:")
+print(tmmx_processed)
+
+print("Precipitation SpatRaster:")
+print(pr_processed)
+```
+
+::: {.callout-tip}
+## Understanding SpatRaster
+
+The `SpatRaster` object contains multiple layers - one for each day in our date range. The `terra` package provides powerful tools for working with these multi-layer raster datasets.
+:::
+
+## Step 4: Extract Values at County Locations
+
+Now we'll extract the gridMET values for our counties using their polygon boundaries.
+
+```{r calculate-values, eval=TRUE}
+# Extract maximum temperature values using county polygons
+# This calculates zonal statistics across the entire county area
+tmmx_counties <- calculate_gridmet(
+  from = tmmx_processed,
+  locs = ca_counties_sf,
+  locs_id = "GEOID",
+  radius = 0,
+  fun = "mean",
+  geom = FALSE
+)
+
+# Extract precipitation values using county polygons
+pr_counties <- calculate_gridmet(
+  from = pr_processed,
+  locs = ca_counties_sf,
+  locs_id = "GEOID",
+  radius = 0,
+  fun = "mean",
+  geom = FALSE
+)
+
+# View results
+head(tmmx_counties)
+head(pr_counties)
+```
+
+::: {.callout-note}
+## Polygon-based Extraction
+
+By passing the polygon geometries directly (instead of centroids), `calculate_gridmet()` performs **zonal statistics** - calculating the mean across all grid cells within each county boundary. This provides a much more accurate representation than point extraction, especially for large counties.
+:::
+
+## Step 5: Data Analysis and Visualization
+
+### Reshape and Summarize Data
+
+```{r analyze-data, eval=TRUE}
+# Combine temperature and precipitation data
+# Note: calculate_gridmet returns data in long format with a 'time' column
+# and variable columns (e.g., 'tmmx_0' for temperature at 0m radius)
+
+# Check the structure
+cat("Temperature data structure:\n")
+str(tmmx_counties)
+cat("\nPrecipitation data structure:\n")
+str(pr_counties)
+
+# Convert time column to Date and rename variable columns
+tmmx_long <- tmmx_counties %>%
+  mutate(date = as.Date(time)) %>%
+  rename(tmax_k = tmmx_0) %>%
+  mutate(tmax_c = tmax_k - 273.15) %>%  # Convert Kelvin to Celsius
+  select(-time, -tmax_k)
+
+pr_long <- pr_counties %>%
+  mutate(date = as.Date(time)) %>%
+  rename(precip_mm = pr_0) %>%
+  select(-time)
+
+# Merge datasets
+weather_data <- tmmx_long %>%
+  left_join(pr_long, by = c("GEOID", "date")) %>%
+  left_join(
+    ca_counties_sf %>% st_drop_geometry() %>% select(GEOID, county_name),
+    by = "GEOID"
+  )
+
+# Calculate summer statistics by county
+summer_stats <- weather_data %>%
+  group_by(GEOID, county_name) %>%
+  summarize(
+    mean_tmax_c = mean(tmax_c, na.rm = TRUE),
+    max_tmax_c = max(tmax_c, na.rm = TRUE),
+    total_precip_mm = sum(precip_mm, na.rm = TRUE),
+    days_over_35c = sum(tmax_c > 35, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# View hottest counties
+summer_stats %>%
+  arrange(desc(mean_tmax_c)) %>%
+  head(10)
+```
+
+### Visualize Temperature Patterns
+
+```{r plot-temperature, eval=TRUE}
+# Join summer statistics with county geometry for mapping
+ca_summer_map <- ca_counties_sf %>%
+  left_join(summer_stats, by = "GEOID")
+
+# Map mean maximum temperature
+ggplot(ca_summer_map) +
+  geom_sf(aes(fill = mean_tmax_c), color = "white", size = 0.2) +
+  scale_fill_viridis_c(option = "inferno", direction = -1) +
+  theme_minimal() +
+  labs(
+    title = "Mean Maximum Temperature in California",
+    subtitle = "Summer 2023 (June - August)",
+    fill = "Temperature (°C)"
+  )
+```
+
+### Time Series for Selected Counties
+
+```{r plot-timeseries, eval=TRUE}
+# Select a few representative counties
+selected_counties <- c("Los Angeles", "San Francisco", 
+                      "Sacramento", "San Diego", "Fresno")
+
+weather_subset <- weather_data %>%
+  filter(county_name %in% selected_counties)
+
+# Temperature time series
+ggplot(weather_subset, aes(x = date, y = tmax_c, color = county_name)) +
+  geom_line(linewidth = 1) +
+  theme_minimal() +
+  labs(
+    title = "Daily Maximum Temperature - Selected California Counties",
+    subtitle = "Summer 2023",
+    x = "Date",
+    y = "Max Temperature (°C)",
+    color = "County"
+  ) +
+  theme(legend.position = "bottom")
+
+# Precipitation time series
+ggplot(weather_subset, aes(x = date, y = precip_mm, fill = county_name)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  labs(
+    title = "Daily Precipitation - Selected California Counties",
+    subtitle = "Summer 2023",
+    x = "Date",
+    y = "Precipitation (mm)",
+    fill = "County"
+  ) +
+  theme(legend.position = "bottom")
+```
+
+### Analyze Extreme Heat Days
+
+```{r plot-heat-days, eval=TRUE}
+# Map days over 35°C (95°F)
+ggplot(ca_summer_map) +
+  geom_sf(aes(fill = days_over_35c), color = "white", size = 0.2) +
+  scale_fill_gradient2(
+    low = "white",
+    mid = "orange",
+    high = "darkred",
+    midpoint = 30
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Extreme Heat Days in California",
+    subtitle = "Days with maximum temperature > 35°C (Summer 2023)",
+    fill = "Number of Days"
+  )
+```
+
+## Step 6: H3 Hexagonal Spatial Analysis
+
+Instead of using county boundaries, we can analyze spatial patterns using H3 hexagons - a hierarchical spatial indexing system that provides uniform hexagonal grids.
+
+### Setup H3
+
+```{r setup-h3}
+# Install and load h3 package
+library(h3jsr)
+```
+
+### Create H3 Grid for California
+
+```{r create-h3-grid, eval=TRUE}
+# Generate H3 hexagons at resolution 6 covering California
+# Resolution 6 creates hexagons approximately 36 km² in area
+
+# Ensure California counties are in WGS84
+ca_counties_wgs84 <- st_transform(ca_counties_sf, 4326)
+
+# Get the bounding box and create a simple polygon
+ca_bbox <- st_bbox(ca_counties_wgs84)
+bbox_poly <- st_as_sfc(ca_bbox) %>%
+  st_sf() %>%
+  st_set_crs(4326)
+
+# Generate H3 cells for the bounding box
+ca_h3_ids <- polygon_to_cells(bbox_poly, res = 6, simple = TRUE)
+
+cat(paste("Generated", length(ca_h3_ids), "H3 hexagons at resolution 6\n"))
+
+# Convert H3 cells to sf polygons and explicitly set CRS
+h3_grid <- cell_to_polygon(ca_h3_ids, simple = FALSE) %>%
+  st_set_crs(4326)
+
+# Intersect with California to keep only hexagons that overlap the state
+h3_grid_ca <- st_intersection(h3_grid, st_union(ca_counties_wgs84))
+
+cat(paste("After filtering:", nrow(h3_grid_ca), "hexagons within California\n"))
+
+# Update h3_cells to match filtered grid
+h3_cells <- h3_grid_ca$h3_address
+
+# Create centroids for data extraction
+h3_centroids <- st_centroid(h3_grid_ca) %>%
+  mutate(
+    h3_id = h3_cells,
+    lon = st_coordinates(.)[,1],
+    lat = st_coordinates(.)[,2]
+  ) %>%
+  st_drop_geometry() %>%
+  select(h3_id, lon, lat)
+
+# Use filtered grid for visualization
+h3_grid <- h3_grid_ca
+
+head(h3_centroids)
+```
+
+```{r plot-h3-grid, eval=TRUE}
+# Visualize H3 grid over California
+ggplot() +
+  geom_sf(data = ca_counties_sf, fill = NA, color = "gray60", size = 0.3) +
+  geom_sf(data = h3_grid, fill = NA, color = "blue", size = 0.2, alpha = 0.5) +
+  theme_minimal() +
+  labs(
+    title = "H3 Hexagonal Grid over California",
+    subtitle = paste("Resolution 6 -", length(h3_cells), "hexagons")
+  )
+```
+
+### Extract GridMET Data for H3 Hexagons
+
+```{r calculate-h3-values, eval=TRUE}
+# Extract temperature using H3 hexagon polygons
+# This performs zonal statistics across each hexagon
+tmmx_h3 <- calculate_gridmet(
+  from = tmmx_processed,
+  locs = h3_grid,
+  locs_id = "h3_address",
+  radius = 0,
+  fun = "mean",
+  geom = FALSE
+)
+
+# Extract precipitation using H3 hexagon polygons
+pr_h3 <- calculate_gridmet(
+  from = pr_processed,
+  locs = h3_grid,
+  locs_id = "h3_address",
+  radius = 0,
+  fun = "mean",
+  geom = FALSE
+)
+
+head(tmmx_h3)
+```
+
+### Process and Aggregate H3 Data
+
+```{r aggregate-h3, eval=TRUE}
+# Process H3 temperature data
+tmmx_h3_long <- tmmx_h3 %>%
+  mutate(date = as.Date(time)) %>%
+  rename(tmax_k = tmmx_0) %>%
+  mutate(tmax_c = tmax_k - 273.15) %>%
+  select(-time, -tmax_k)
+
+# Process H3 precipitation data
+pr_h3_long <- pr_h3 %>%
+  mutate(date = as.Date(time)) %>%
+  rename(precip_mm = pr_0) %>%
+  select(-time)
+
+# Merge H3 data
+h3_weather_data <- tmmx_h3_long %>%
+  left_join(pr_h3_long, by = c("h3_address", "date"))
+
+# Calculate summer statistics by H3 hexagon
+h3_summer_stats <- h3_weather_data %>%
+  group_by(h3_address) %>%
+  summarize(
+    mean_tmax_c = mean(tmax_c, na.rm = TRUE),
+    max_tmax_c = max(tmax_c, na.rm = TRUE),
+    total_precip_mm = sum(precip_mm, na.rm = TRUE),
+    days_over_35c = sum(tmax_c > 35, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+head(h3_summer_stats)
+```
+
+### Visualize Spatial Patterns with H3 Hexagons
+
+```{r plot-h3-temperature, eval=TRUE}
+# Join statistics with H3 grid geometry
+h3_summer_map <- h3_grid %>%
+  left_join(h3_summer_stats, by = "h3_address")
+
+# Map mean temperature with H3 hexagons
+ggplot(h3_summer_map) +
+  geom_sf(aes(fill = mean_tmax_c), color = NA) +
+  geom_sf(data = ca_counties_sf, fill = NA, color = "gray30", size = 0.3) +
+  scale_fill_viridis_c(option = "inferno", direction = -1, na.value = "gray90") +
+  theme_minimal() +
+  labs(
+    title = "Mean Maximum Temperature - H3 Hexagonal Grid",
+    subtitle = "California Summer 2023 (Resolution 6)",
+    fill = "Temperature (°C)"
+  )
+```
+
+```{r plot-h3-precipitation, eval=TRUE}
+# Map total precipitation with H3 hexagons
+ggplot(h3_summer_map) +
+  geom_sf(aes(fill = total_precip_mm), color = NA) +
+  geom_sf(data = ca_counties_sf, fill = NA, color = "gray30", size = 0.3) +
+  scale_fill_viridis_c(option = "mako", direction = -1, na.value = "gray90") +
+  theme_minimal() +
+  labs(
+    title = "Total Precipitation - H3 Hexagonal Grid",
+    subtitle = "California Summer 2023 (Resolution 6)",
+    fill = "Precipitation (mm)"
+  )
+```
+
+```{r plot-h3-heat-days, eval=TRUE}
+# Map extreme heat days with H3 hexagons
+ggplot(h3_summer_map) +
+  geom_sf(aes(fill = days_over_35c), color = NA) +
+  geom_sf(data = ca_counties_sf, fill = NA, color = "gray30", size = 0.3) +
+  scale_fill_gradient2(
+    low = "white",
+    mid = "orange",
+    high = "darkred",
+    midpoint = 30,
+    na.value = "gray90"
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Extreme Heat Days - H3 Hexagonal Grid",
+    subtitle = "Days > 35°C, Summer 2023 (Resolution 6)",
+    fill = "Number of Days"
+  )
+```
+
+::: {.callout-tip}
+## Why Use H3 Hexagons?
+
+**Advantages over administrative boundaries:**
+
+- **Uniform sampling**: Each hexagon has equal area (~36 km² at resolution 6)
+- **No edge effects**: Hexagons have equal distance to all 6 neighbors
+- **Better spatial patterns**: Reveals gradients not visible with irregular county boundaries
+- **Hierarchical**: Easy to aggregate/disaggregate between resolutions
+- **Consistent**: Same grid system works globally
+
+H3 hexagons provide a more uniform and statistically robust way to visualize spatial patterns in climate data.
+:::
+
+## Summary and Next Steps
+
+In this tutorial, you've learned how to:
+
+1. ✓ Obtain California county boundaries using `tigris`
+2. ✓ Download gridMET meteorological data using `amadeus::download_data()`
+3. ✓ Process raw netCDF files into usable spatial formats
+4. ✓ Extract values at specific locations (county centroids)
+5. ✓ Analyze and visualize temperature and precipitation patterns
+6. ✓ Export results for further analysis
+
+### Next Steps
+
+- **Expand temporal coverage**: Download data for multiple years to analyze trends
+- **Add more variables**: Explore other gridMET variables like humidity, solar radiation, or wind speed
+- **Refine spatial analysis**: Use buffers or zonal statistics for more sophisticated extraction methods
+- **Statistical modeling**: Use the extracted data as covariates in epidemiological or environmental models
+- **Automate workflows**: Create scripts to regularly update data and generate reports
+
+### Additional Resources
+
+- [gridMET Documentation](https://www.climatologylab.org/gridmet.html)
+- [Amadeus Package Website](https://niehs.github.io/amadeus/)
+- [gridMET Variable Reference](https://www.climatologylab.org/wget-gridmet.html)
+- [Terra Package Documentation](https://rspatial.github.io/terra/)
+
+---
+
+::: {.callout-note}
+## Session Information
+
+```{r session-info}
+sessionInfo()
+```
+:::
