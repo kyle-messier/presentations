@@ -442,11 +442,11 @@ Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-so
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
 
-## Spatial Epidemiology with Mechanistic Modeling
+## Geospatial approximation of molecular epidemiological methods
 
 ::: {style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 30px;"}
 ::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
-**Assume individuals have measured biomarkers or biological data (e.g. epigenetic, transcriptomic, proteomic)**
+**Increased precision and mechanistic insight in spatial epidemiology**
 :::
 :::
 
@@ -458,21 +458,25 @@ Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-so
 ↓  
 **External Exposure**  
 ↓  
-*Mechanistic Modeling*  
+*Behavioral and Physiological Modeling*  
 ↓  
-**Mechanism Endpoint**  
+**Internal Exposure**  
 ↓  
-*Concentration Response Modeling*  
+*PBTK*  
+↓  
+**Target Organ Dose**  
 ↓  
 **Concentration Response**  
 ↓  
 *Risk Assessment*  
+↓  
+**Geospatial Risk Map**
 
 :::
 
 ::: {style="display: flex; justify-content: center; margin-top: 30px;"}
 ::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
-**Relates External Exposure to Individual Mechanism Endpoints**
+**Relates External Exposure to Target Organ Dose and Observed Outcomes**
 :::
 :::
 
@@ -487,7 +491,7 @@ Messier, K. P., Reif, D. M., & Marvel, S. W. (2025). The GeoTox Package: open-so
 
 1) Source-to-Outcome Modeling is clearly a complex problem.
 2) There are many data sources, methods, and software to address each step in source-to-outcome modeling 
-3) Documented and Open-Source tools and pipelines are needed to ensure teams can build upon each other
+3) Documented and Open-Source tools and pipelines are needed to ensure projects can build upon each other
 4) Accessible methods and data enable reproducible and scalable research
 
 <!-------------------------------------------------------------------------->
@@ -561,15 +565,11 @@ Chemical mixture dose-response
 | 6 | [**PrestoGP**](https://niehs.github.io/PrestoGP/) | Scalable penalized spatiotemporal GP regression | WIP |
 
 
-
----
-
 # Building the Steps {.section-title background-color="#3d763d"}
 
 1) Amadeus 
-2) PrestoGP 
-3) Beethoven 
-4) GeoTox 
+2) Beethoven 
+3) GeoTox 
 
 # Amadeus: Democratizing Geospatial Data Usage {.section-title background-color="#3d763d"}
 
@@ -653,9 +653,9 @@ Chemical mixture dose-response
 ## Workflow Code
 
 ```{r gridmet-tmmx-workflow, echo=TRUE, eval=FALSE}
-#| code-line-numbers: "|3-11|13-17|19-29"
+#| code-line-numbers: "|3-4|13|22"
 
-# Step 2: Download and process maximum temperature (tmmx)
+# Download and process maximum temperature (tmmx)
 download_data(
   dataset_name = "gridmet",
   variable = "tmmx",
@@ -671,7 +671,7 @@ tmmx_processed <- process_covariates(
   path = file.path(data_dir, "tmmx")
 )
 
-# Step 6: Create H3 hexagonal grid and extract tmmx values
+# Create H3 hexagonal grid and extract tmmx values
 h3_grid_ca <- polygon_to_cells(ca_counties_sf, res = 6, simple = FALSE)
 
 # Extract tmmx using H3 hexagon polygons (zonal statistics)
@@ -761,85 +761,11 @@ time (days) : 2023-06-01 to 2023-08-31 (92 steps)
 2. Kriging / Gaussian Processes / BME 
 3. Machine Learning methods - e.g. Random Forest, Gradient Boosting, Neural Nets, Ensembles
 
-# PrestoGP: Scalable Spatiotemporal GP {.section-title background-color="#3d763d"}
-
-::: {.columns}
-::: {.column width="60%"}
-**General Vecchia approximation** *(Katzfuss & Guinness 2021)*
-
-$$p(\mathbf{y}) \approx \prod_{i=1}^n p(y_i \mid y_{c(i)})$$
-
-Reduces computation: $\mathcal{O}(n^3)$ → $\mathcal{O}(nm^3)$, $m \ll n$
-
-**PrestoGP model** *(Messier & Katzfuss 2020, JRSS-A)*
-
-$$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{w} + \boldsymbol{\epsilon}$$
-
-- $\mathbf{w}$: spatiotemporal GP with Matérn covariance
-- $\boldsymbol{\beta}$: estimated via penalized likelihood (LASSO/SCAD/MCP)
-- Variable selection + GP estimation *simultaneously*
-:::
-::: {.column width="40%"}
-*[Vecchia neighbor diagram — placeholder]*
-:::
-:::
+# Beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## PrestoGP: R Package API
-
-```r
-# Univariate spatiotemporal model
-model <- new("VecchiaModel", n_neighbors = 10)
-model <- prestogp_fit(model, y, X, locs)
-yhat  <- prestogp_predict(model, X_new, locs_new)
-
-# Multivariate (multiple pollutants simultaneously)
-model_mv <- new("MultivariateVecchiaModel", n_neighbors = 10)
-model_mv <- prestogp_fit(model_mv,
-                         y    = list(y_no2, y_pm25),
-                         X    = list(X_no2, X_pm25),
-                         locs = list(locs, locs))
-
-# LOD-censored imputation
-model <- prestogp_fit(model, y_censored, X, locs,
-                      impute.y = TRUE, lod = lod_value)
-```
-
-`github.com/NIEHS/PrestoGP`
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
-## PrestoGP: Applications
-
-::: {.columns}
-::: {.column width="50%"}
-**NO₂ Mapping** *(Messier & Katzfuss 2020)*
-
-- Continental US ground-level NO₂
-- Penalized LUR + spatiotemporal GP
-- Better CV performance vs. standard LUR
-
-*[Predicted NO₂ surface — placeholder]*
-:::
-::: {.column width="50%"}
-**Chlorotriazine Groundwater** *(In Progress)*
-
-> Multivariate & censored geospatial models for data-sparse chemicals: US chlorotriazine groundwater 1990–2022
-
-- Herbicide mixture modeling (atrazine, simazine, …)
-- Sparse + heavily LOD-censored monitoring data
-- Multivariate Matérn cross-covariance
-
-*[Chlorotriazine prediction map — placeholder]*
-:::
-:::
-
-# beethoven: Ensemble Air Quality Pipeline {.section-title background-color="#3d763d"}
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
-## beethoven: Ensemble Air Quality Pipeline
+## Beethoven: Ensemble Air Quality Pipeline
 
 ::: {.columns}
 ::: {.column width="60%"}
@@ -861,14 +787,14 @@ model <- prestogp_fit(model, y_censored, X, locs,
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## beethoven: Architecture
+## Beethoven: Architecture
 
 ```
 amadeus ──► [Download: EPA AQS, MODIS, MERRA-2, NARR, NLCD, HMS ...]
                   │
-chopin  ──► [Covariate calculation at AQS sites & prediction grid]
+           [Covariate calculation at AQS sites & prediction grid]
                   │
-            [Base Learners: LightGBM | Neural Net | glmnet | SVM]
+            [Base Learners: LightGBM | Neural Net | glmnet | GAM]
                   │
             [Meta Learner — stacked ensemble]
                   │
@@ -879,7 +805,7 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## beethoven: Ensemble Model
+## Beethoven: Ensemble Model
 
 ::: {.columns}
 ::: {.column width="55%"}
@@ -890,28 +816,48 @@ chopin  ──► [Covariate calculation at AQS sites & prediction grid]
 - LightGBM (gradient boosting)
 - Neural networks (`{brulee}` / `{torch}`)
 - Regularized regression (glmnet)
-- Support vector machines
+- Generalized Additive Models (GAM)
+
+**Meta learner:**
+- Out-of-Sample Learning Only (Prevents Meta-Learning Data Leakage)
+- Another ML Model: LightGBM or GAM
 
 **Validation:**
 
-- Spatial cross-validation (`{spatialsample}`)
+- Space-Time cross-validation (`{spatialsample}`)
 - Hyperparameter tuning (`{finetune}`)
 :::
 ::: {.column width="45%"}
 **HPC infrastructure:**
 
-- `Apptainer` container images
+- `Conda` environments
 - SLURM batch jobs per pipeline stage
 - `{crew}` + `{crew.cluster}` distributed workers
 - `{targets}` caches intermediate results
 
-*[beethoven visnetwork — placeholder]*
 :::
 :::
 
----
+## Beethoven Extensions for Exposomic Modeling 
 
----
+::: {style="display: flex; justify-content: center; margin-top: 30px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+**The Extensibility of Beethoven Serves as a Template for Predictive Modeling of Exposomic Chemicals**
+
+1. Wildfire PM2.5 Model 
+2. PM2.5 Chemical Speciation Model 
+3. Hazardous Air Pollutants 
+4. Groundwater Pesticides
+
+:::
+:::
+
+
+::: {style="display: flex; justify-content: center; margin-top: 30px;"}
+::: {style="background-color: #f8f9fa; border: 2px solid #3d763d; border-radius: 15px; padding: 25px; text-align: center; max-width: 85%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"}
+**SET group focuses on updatable, reproducible models and chemicals with sparse exposure information for risk assessment**
+:::
+:::
 
 # GeoTox: Source-to-Outcome Risk Assessment {.section-title background-color="#3d763d"}
 
@@ -952,162 +898,130 @@ install.packages("GeoTox")
 <!--------------------------------------------------------------------------->
 ## GeoTox: Data Inputs
 
-::: {.columns}
-::: {.column width="60%"}
+
 **Required inputs for a GeoTox analysis:**
 
-- **Chemical concentrations** — spatiotemporal exposure estimates (e.g., from amadeus + beethoven)
+- **Chemical concentrations** — spatiotemporal exposure estimates
 - **Toxicokinetic parameters** — HTTK model outputs (age, sex, body weight distributions)
-- **In vitro concentration-response** — ToxCast / ICE assay data
+- **In vitro concentration-response** — Tox21 / InvitroDB assay data
 - **Population data** — census-based age/sex distributions per geographic unit
 
 **Geographic resolution:**
 
 - County, ZCTA, grid cell, or custom spatial unit
 - Integrates with any spatially-referenced exposure dataset
-:::
-::: {.column width="40%"}
-*[GeoTox data input diagram — placeholder]*
-:::
-:::
 
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
-## GeoTox: Methodology
-
-::: {.columns}
-::: {.column width="55%"}
-**Step 1 — Exposure to internal dose:**
-
-$$C_{internal} = f_{TK}(C_{ambient}, 	ext{age}, 	ext{sex}, 	ext{BW})$$
-
-**Step 2 — Mixture dose-response (RGCA):**
-
-$$E[	ext{response}] = 	ext{RGCA}(C_1, C_2, \ldots, C_k)$$
-
-- Reflected Generalized Concentration Addition
-- Handles partial agonists and mixture interactions
-
-**Step 3 — Population risk:**
-
-$$	ext{Risk}_{geo} = \sum_{i} w_i \cdot P(	ext{response}_i > 	ext{threshold})$$
-
-:::
-::: {.column width="45%"}
-*[GeoTox workflow schematic — placeholder]*
-:::
-:::
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
 ## GeoTox: Analysis Walk-Through
 
-::: {.columns}
-::: {.column width="55%"}
-**Example analysis: air toxics risk in North Carolina**
+::: {.panel-tabset}
 
-```r
-library(GeoTox)
+## 1. Setup
 
-# 1. Prepare exposure data
-geoTox_data <- prep_exposure(
-  conc = air_toxics_conc,
-  locs = nc_counties
-)
+![](images/GeoTox-01.png){fig-align="center" width="60%"}
 
-# 2. Run toxicokinetic simulation
-geoTox_data <- sim_internal_dose(
-  geoTox_data,
-  age = census_age_distributions
-)
+**Initialize GeoTox analysis**
 
-# 3. Compute mixture dose-response
-geoTox_data <- calc_concentration_response(geoTox_data)
+- Load required packages (`GeoTox`, `sf`, `dplyr`)
+- Define study region, areeal units, time period
+- Fit inidivual chemical-assay dose-response models 
 
-# 4. Estimate population risk
-risk <- calc_risk(geoTox_data)
-```
-:::
-::: {.column width="45%"}
-*[NC county risk map — placeholder]*
-:::
+## 2. Tidy-style workflow 
+
+![](images/GeoTox-02.png){fig-align="center" width="60%"}
+
+**Spatially-referenced chemical concentrations**
+
+- Simulate stead-state plasma concentrations 
+- Simulate population characteristics 
+- Mixtures dose-response modeling 
+- Perform sensitivity analyses
+
+## 3. Object-Oriented Database Structure
+
+![](images/GeoTox-03.png){fig-align="center" width="60%"}
+
+**Age and sex distributions by location**
+
+- GeoTox object
+- DuckDB relational objects for datasets and analysis results
+
+## 4. Plot Normalized External Exposures
+
+![](images/GeoTox-04.png){fig-align="center" width="60%"}
+
+
+## 5. Plot Internal and In-vitro Equivalent Concentrations
+
+![](images/GeoTox-06.png){fig-align="center" width="60%"}
+
+**Geo-referenced internal dose and in-vitro equivalent concentrations**
+
+- In-vitro equivalent concentrations puts units on the same scale as in-vitro assays
+- Common molecular initiating event (MIE) or Key Event 
+- Mechanistic assays are now linked to geospatial exposure and population data
+
+## 7. Plot GeoTox Risk Predictions
+
+![](images/GeoTox-07.png){fig-align="center" width="60%"}
+
+ - Concentration Addition 
+ - Independent Action
+ - Hazard Index
+
+![](images/GeoTox-08.png){fig-align="center" width="60%"}
+
+**Spatial distribution of risk**
+
+- Areal unit plots of assay based risk
+- Identify vulnerable populations and hotspots
+
+## 8. Sensitivity Analysis
+
+![](images/GeoTox-09.png){fig-align="center" width="60%"}
+
+- Uncertainty and limitations
+
 :::
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## GeoTox: Results
 
-::: {.columns}
-::: {.column width="50%"}
-**Population-level outputs:**
-
-- Predicted response probability per geographic unit
-- Uncertainty bounds from Monte Carlo simulation
-- Disaggregation by demographic group (age, sex)
-
-*[County-level risk choropleth — placeholder]*
-:::
-::: {.column width="50%"}
-**Sensitivity analysis:**
-
-- Contribution of individual chemicals to mixture risk
-- Influence of toxicokinetic variability vs. exposure uncertainty
-
-*[Sensitivity / contribution bar chart — placeholder]*
-:::
-:::
-
-::: {.callout-note}
-Results and figures to be updated as analyses are finalized.
-:::
-
----
-
-# Conclusions {.section-title background-color="#3d763d"}
+# Summary {.section-title background-color="#3d763d"}
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## Source-to-Outcome: The Full Picture
+## Source-to-Outcome: Current Developments
 
-. . .
-
-::: {.columns}
-::: {.column width="25%"}
-**📥 Data**
-
-`amadeus`
-
-Standardized access to 17+ geospatial sources
-:::
-::: {.column width="25%"}
-**⚙️ Methods**
-
-`PrestoGP` + `chopin`
-
-Scalable spatiotemporal GP + parallel computation
-:::
-::: {.column width="25%"}
-**📊 Pipelines**
-
-`beethoven` + `hcup_ap`
-
-National PM₂.₅ → health outcomes
-:::
-::: {.column width="25%"}
-**🧬 Risk**
-
-`GeoTox`
-
-Chemical mixture → molecular target → population risk
-:::
+::: {.incremental}
+- Geospatially mapping population risk based on perturbation of mechanistic endpoints
+- Geospatially mapping individual risk based on mechanistic endpoints (Paper in progress, Reif et al.)
+- High temporal resolution dose-response and risk assessment based on GeoTox (Paper in progress, Kruse et al.)
+- Geospatial mapping of risk based on multiple assay endpoints (Messier, Marvel, Reif, 2025)
 :::
 
-. . .
 
-> **Open-source tools at every stage of the source-to-outcome continuum.**
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
+
+## Source-to-Outcome: Future Directions
+
+::: {.incremental}
+- GeoTox providing a framework for near-real time risk assessment during disaster events (e.g. East Palestine train derailment)
+- Combining multiple mechanistic pathways to predict complex health outcomes 
+- Limitation: Address the validation issue — how do we validate mechanistic risk predictions when we don't have observed data available?
+- Limitation: Address the uncertainty issue — how do we quantify and communicate the uncertainty in mechanistic risk predictions?
+- Limitation: Geospatial exposures and a lamp-post problem - keep expanding the availability of geospatial exposure data to cover more chemicals and exposure routes
+
+:::
+
+
+<!-------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------->
+
 ## Reproducible & Open-Source Tools
 
 ::: {.columns}
@@ -1139,60 +1053,32 @@ Chemical mixture → molecular target → population risk
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
-## Future Directions
-
-::: {.columns}
-::: {.column width="50%"}
-**Exposure modeling:**
-
-- Expand PrestoGP to full exposome (multi-pollutant, chemicals)
-- Near real-time PM₂.₅ via beethoven
-- Sub-daily temporal resolution
-- Full uncertainty propagation through pipeline
-
-**Health outcomes:**
-
-- Expand phenotype library in hcup_ap
-- Multi-source air pollution (beyond wildfire)
-- Causal inference for ecological analyses
-:::
-::: {.column width="50%"}
-**Open science:**
-
-- beethoven predictions as public data resource
-- amadeus expansion + Python port
-- PrestoGP → CRAN
-- Training resources for epi/tox community
-
-**Source-to-outcome integration:**
-
-- Connect beethoven PM₂.₅ into GeoTox
-- Multi-chemical national-scale risk assessment
-- CHORDS federated multi-site analyses
-:::
-:::
-
-<!-------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------->
 ## Acknowledgments
 
 ::: {.columns}
 ::: {.column width="50%"}
-**SET Group — NIEHS**
+**SET Group — Current Members**
 
+- Paul Kruse
+- Kate Goodrich
+- Austin Rau
+- Zach Stanfield 
+
+**SET Group — Former Members**
+- Daniel Zilber
 - Insang Song
 - Mitchell Manware
 - Eva Marques
-- Lara Clark
 - Mariana Kassien
-- Anisha Singh
-- Cavin Ward-Caviness
+- Kristin Eccles 
+- Melissa Lowe
+- Taylor Potter
 
 **Collaborators**
 
+- Cavin Ward-Caviness (Former EPA, Buck Institute)
 - Matthias Katzfuss (UW Madison)
-- Matt Wheeler (NIEHS)
-- David Reif (NC State)
+- David Reif (NIEHS)
 - Skylar Marvel (NIEHS)
 :::
 ::: {.column width="50%"}
@@ -1213,14 +1099,12 @@ Chemical mixture → molecular target → population risk
 :::
 :::
 
----
 
 <!-------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------->
 ## Questions?
 
-::: {.columns}
-::: {.column width="60%"}
+
 **Kyle P. Messier, PhD**
 Stadtman Tenure-Track Investigator
 NIEHS · kyle.messier@nih.gov
@@ -1235,8 +1119,4 @@ NIEHS · kyle.messier@nih.gov
 | `ropensci/chopin` | Parallel spatial computation |
 
 `niehs.github.io/SET` · `github.com/NIEHS`
-:::
-::: {.column width="40%"}
-*[QR code — placeholder]*
-:::
-:::
+
